@@ -42,75 +42,89 @@ def opening_neows():
 
     for i in neo_dict_keys:
         pass
-        #print(i)
+        # print(i)
 
 
 def save_neows_data():
-
-    temporary = Text()
+    text_field = Text()
 
     required = make_request(neo_browse, demo_key)
     neo_ws = required["near_earth_objects"]
 
     local_address = r'api_data\all_neows'
-    format_type = 'txt'
+    format_type = 'text'
 
     for i in neo_ws:
         file_name = i['name_limited']
 
         completed_address = r'{}\{}.{}'.format(local_address, file_name, format_type)
-        #  file = open(completed_address, 'w+')
+        file = open(completed_address, 'w+')
 
-        print(f'-----{file_name}\n\n')
+        title = f'#  {file_name}\n\n\n'
+        text_field.insert(1.0, title)
 
         for j in i:
 
             if j == 'estimated_diameter':
-                print(f'[{j}] = ' + '{')
-                temporary_dict = i[j]
-                for z in temporary_dict:
-                    print(f'    {z}: {temporary_dict[z]}, ')
-                print("}\n")
+
+                dict_open = f'{j} = ' + '{\n'
+                text_field.insert(END, dict_open)
+
+                for z in i[j]:
+
+                    key_and_data = f'    "{z}": {i[j][z]}, \n'
+                    text_field.insert(END, key_and_data)
+
+                dict_close = '}\n\n'
+                text_field.insert(END, dict_close)
 
             elif j == 'close_approach_data':
 
-                print(f'[{j}] = [')
+                list_open = f'{j} = [\n'
+                text_field.insert(END, list_open)
 
-                temporary_list = i[j]
-                for z in temporary_list:
+                for z in i[j]:
 
-                    print(f'\n({z["close_approach_date"]}) = ' + '{')
+                    dict_open = f'\n({z["close_approach_date"]}) = ' + '{\n'
+                    text_field.insert(END, dict_open)
 
                     for y in z:
+                        key_and_data = f'    "{y}": {z[y]}, \n'
+                        text_field.insert(END, key_and_data)
 
-                        print(f'    {y}: {z[y]}, ')
+                    dict_close = " " * 10 + "}\n"
+                    text_field.insert(END, dict_close)
 
-                    print(" "*10 + "}\n")
-                print("]\n")
+                list_close = "]\n\n"
+                text_field.insert(END, list_close)
 
             elif j == 'orbital_data':
-                print(f'[{j}] = ' + '{')
-                temporary_dict = i[j]
-                for z in temporary_dict:
-                    print(f'    {z}: {temporary_dict[z]}, ')
-                print("}\n")
+
+                dict_open = f'{j} = ' + '{\n'
+                text_field.insert(END, dict_open)
+
+                for z in i[j]:
+
+                    key_and_data = f'    "{z}": {i[j][z]}, \n'
+                    text_field.insert(END, key_and_data)
+
+                dict_close = "}\n\n"
+                text_field.insert(END, dict_close)
 
             else:
-                print(f'{j}: {i[j]}')
-                print('\n')
 
-            temporary.insert(1.0, f'{i["name"]}')
-        #  file.write(temporary.get(1.0, END))
+                var_and_data = f'{j} = "{i[j]}"\n\n'
+                text_field.insert(END, var_and_data)
+
+        file.write(text_field.get(1.0, END))
 
         #  file.close()
-        temporary.delete(1.0, END)
+        text_field.delete(1.0, END)
 
 
 def teste(endereco, formato):
-
     arquivo = open(f"{endereco}.{formato}", "r")
     arquivo_lido = arquivo.read()
 
 
 save_neows_data()
-
