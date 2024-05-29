@@ -52,7 +52,7 @@ def save_neows_data():
     neo_ws = required["near_earth_objects"]
 
     local_address = r'api_data\all_neows'
-    format_type = 'text'
+    format_type = 'py'
 
     for i in neo_ws:
         file_name = i['name_limited']
@@ -67,49 +67,49 @@ def save_neows_data():
 
             if j == 'estimated_diameter':
 
-                dict_open = f'{j} = ' + '{\n'
-                text_field.insert(END, dict_open)
+                internal_dict_open = f'{j} = ' + '{\n'
+                text_field.insert(END, internal_dict_open)
 
                 for z in i[j]:
 
                     key_and_data = f'    "{z}": {i[j][z]}, \n'
                     text_field.insert(END, key_and_data)
 
-                dict_close = '}\n\n'
-                text_field.insert(END, dict_close)
+                internal_dict_close = '}\n\n'
+                text_field.insert(END, internal_dict_close)
 
             elif j == 'close_approach_data':
 
-                list_open = f'{j} = [\n'
-                text_field.insert(END, list_open)
-
-                for z in i[j]:
-
-                    dict_open = f'\n({z["close_approach_date"]}) = ' + '{\n'
-                    text_field.insert(END, dict_open)
-
-                    for y in z:
-                        key_and_data = f'    "{y}": {z[y]}, \n'
-                        text_field.insert(END, key_and_data)
-
-                    dict_close = " " * 10 + "}\n"
-                    text_field.insert(END, dict_close)
-
-                list_close = "]\n\n"
-                text_field.insert(END, list_close)
-
-            elif j == 'orbital_data':
-
                 dict_open = f'{j} = ' + '{\n'
                 text_field.insert(END, dict_open)
 
                 for z in i[j]:
 
-                    key_and_data = f'    "{z}": {i[j][z]}, \n'
-                    text_field.insert(END, key_and_data)
+                    internal_dict_open = f'\n"  {z["close_approach_date_full"]}": ' + '{\n'
+                    text_field.insert(END, internal_dict_open)
+
+                    for y in z:
+                        key_and_data = f'       "{y}": "{z[y]}", \n'
+                        text_field.insert(END, key_and_data)
+
+                    internal_dict_close = " " * 10 + "}, \n"
+                    text_field.insert(END, internal_dict_close)
 
                 dict_close = "}\n\n"
                 text_field.insert(END, dict_close)
+
+            elif j == 'orbital_data':
+
+                internal_dict_open = f'{j} = ' + '{\n'
+                text_field.insert(END, internal_dict_open)
+
+                for z in i[j]:
+
+                    key_and_data = f'    "{z}": "{i[j][z]}", \n'
+                    text_field.insert(END, key_and_data)
+
+                internal_dict_close = "}\n\n"
+                text_field.insert(END, internal_dict_close)
 
             else:
 
