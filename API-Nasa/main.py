@@ -30,8 +30,8 @@ def opening_neows():
         print(type(required[i]))
         print(required[i])
         print(len(required[i]))
-        print('\n')
-'''
+        print('\n')'''
+
         if i == 'near_earth_objects':
             neo_dict_keys = set()
             print('\n\n\n')
@@ -45,7 +45,8 @@ def opening_neows():
         # print(i)
 
 
-def save_neows_data():
+def update_and_save_neows_data():
+
     text_field = Text()
 
     required = make_request(neo_browse, demo_key)
@@ -55,6 +56,7 @@ def save_neows_data():
     format_type = 'py'
 
     for i in neo_ws:
+
         file_name = i['name_limited']
 
         completed_address = r'{}\{}.{}'.format(local_address, file_name, format_type)
@@ -62,6 +64,9 @@ def save_neows_data():
 
         title = f'#  {file_name}\n\n\n'
         text_field.insert(1.0, title)
+
+        create_principal_dict = f'{i["name_limited"].lower()}_all_data = dict()\n\n\n'
+        text_field.insert(END, create_principal_dict)
 
         for j in i:
 
@@ -71,8 +76,14 @@ def save_neows_data():
                 text_field.insert(END, internal_dict_open)
 
                 for z in i[j]:
+                    key, data = z, i[j][z]
 
-                    key_and_data = f'    "{z}": {i[j][z]}, \n'
+                    if type(data) is str:
+                        data = f'"{data}"'
+                    else:
+                        data = data
+
+                    key_and_data = f'    "{key}": {data}, \n'
                     text_field.insert(END, key_and_data)
 
                 internal_dict_close = '}\n\n'
@@ -83,16 +94,52 @@ def save_neows_data():
                 dict_open = f'{j} = ' + '{\n'
                 text_field.insert(END, dict_open)
 
+                data_in_dict = ["relative_velocity", "miss_distance"]
+
                 for z in i[j]:
 
-                    internal_dict_open = f'\n"  {z["close_approach_date_full"]}": ' + '{\n'
+                    internal_dict_name = z["close_approach_date_full"]
+                    internal_dict_open = f'   "{internal_dict_name}": ' + '{\n'
+
                     text_field.insert(END, internal_dict_open)
 
                     for y in z:
-                        key_and_data = f'       "{y}": "{z[y]}", \n'
-                        text_field.insert(END, key_and_data)
 
-                    internal_dict_close = " " * 10 + "}, \n"
+                        if y in data_in_dict:
+
+                            data_dict_key = y
+                            data_dict_open = f'       "{data_dict_key}": ' + '{\n'
+
+                            text_field.insert(END, data_dict_open)
+
+                            for x in z[y]:
+
+                                key, data = x, z[y][x]
+
+                                if type(data) is str:
+                                    data = f'"{data}"'
+                                else:
+                                    data = data
+
+                                key_and_data = f'           "{key}": {data}, \n'
+                                text_field.insert(END, key_and_data)
+
+                            data_dict_close = "       " + "}, \n"
+                            text_field.insert(END, data_dict_close)
+
+                        else:
+
+                            key, data = y, z[y]
+
+                            if type(data) is str:
+                                data = f'"{data}"'
+                            else:
+                                data = data
+
+                            key_and_data = f'       "{key}": {data}, \n'
+                            text_field.insert(END, key_and_data)
+
+                    internal_dict_close = "   " + "}, \n"
                     text_field.insert(END, internal_dict_close)
 
                 dict_close = "}\n\n"
@@ -103,22 +150,78 @@ def save_neows_data():
                 internal_dict_open = f'{j} = ' + '{\n'
                 text_field.insert(END, internal_dict_open)
 
+                data_in_dict = ["orbit_class"]
+
                 for z in i[j]:
 
-                    key_and_data = f'    "{z}": "{i[j][z]}", \n'
-                    text_field.insert(END, key_and_data)
+                    if z in data_in_dict:
+
+                        data_dict_open = f'    "{z}": ' + '{\n'
+                        text_field.insert(END, data_dict_open)
+
+                        for x in i[j][z]:
+
+                            key, data = x, i[j][z][x]
+
+                            if key == "orbit_class_description":
+                                key_and_data = f'        "description": "{data}", \n'
+                                text_field.insert(END, key_and_data)
+                            else:
+                                if type(data) is str:
+                                    data = f'"{data}"'
+                                else:
+                                    data = data
+                                key_and_data = f'        "{key}": {data}, \n'
+                                text_field.insert(END, key_and_data)
+
+                        data_dict_close = "    }\n\n"
+                        text_field.insert(END, data_dict_close)
+
+                    else:
+
+                        key, data = z, i[j][z]
+
+                        if type(data) is str:
+                            data = f'"{data}"'
+                        else:
+                            data = data
+
+                        key_and_data = f'    "{key}": {data}, \n'
+                        text_field.insert(END, key_and_data)
 
                 internal_dict_close = "}\n\n"
                 text_field.insert(END, internal_dict_close)
 
             else:
 
-                var_and_data = f'{j} = "{i[j]}"\n\n'
+                if j == 'id':
+                    var_name = f'{j}_code'
+                else:
+                    var_name = j
+
+                if type(i[j]) is str:
+                    data = f'"{i[j]}"'
+                else:
+                    data = i[j]
+
+                var_and_data = f'{var_name} = {data}\n\n'
                 text_field.insert(END, var_and_data)
+
+        for j in i:
+
+            if j == 'id':
+                var_name = f'{j}_code'
+            else:
+                var_name = j
+
+            dict_name = i["name_limited"]
+
+            add_in_principal_list = f'{dict_name.lower()}_all_data["{var_name}"] = {var_name}\n'
+            text_field.insert(END, add_in_principal_list)
 
         file.write(text_field.get(1.0, END))
 
-        #  file.close()
+        file.close()
         text_field.delete(1.0, END)
 
 
@@ -127,4 +230,4 @@ def teste(endereco, formato):
     arquivo_lido = arquivo.read()
 
 
-save_neows_data()
+update_and_save_neows_data()
