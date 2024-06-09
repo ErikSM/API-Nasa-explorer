@@ -21,10 +21,11 @@ nasa_jpl_url = "https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=2001917"
 absolute_magnitude_h = 14.41
 
 estimated_diameter = {
-    "kilometers": {'estimated_diameter_min': 3.4878273316, 'estimated_diameter_max': 7.7990190072}, 
-    "meters": {'estimated_diameter_min': 3487.827331593, 'estimated_diameter_max': 7799.0190072237}, 
-    "miles": {'estimated_diameter_min': 2.1672347569, 'estimated_diameter_max': 4.8460842395}, 
     "feet": {'estimated_diameter_min': 11443.0034225837, 'estimated_diameter_max': 25587.3335196599}, 
+    "miles": {'estimated_diameter_min': 2.1672347569, 'estimated_diameter_max': 4.8460842395}, 
+    "meters": {'estimated_diameter_min': 3487.827331593, 'estimated_diameter_max': 7799.0190072237}, 
+    "kilometers": {'estimated_diameter_min': 3.4878273316, 'estimated_diameter_max': 7.7990190072}, 
+
 }
 
 is_potentially_hazardous_asteroid = False
@@ -285,6 +286,7 @@ close_approach_data = {
        }, 
        "orbiting_body": "Earth", 
    }, 
+
 }
 
 orbital_data = {
@@ -315,6 +317,7 @@ orbital_data = {
         "description": "Near-Earth asteroid orbits similar to that of 1221 Amor", 
         "orbit_class_range": "1.017 AU < q (perihelion) < 1.3 AU", 
     }
+
 
 }
 

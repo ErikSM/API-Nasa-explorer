@@ -21,10 +21,11 @@ nasa_jpl_url = "https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=2001865"
 absolute_magnitude_h = 16.79
 
 estimated_diameter = {
-    "kilometers": {'estimated_diameter_min': 1.1656145947, 'estimated_diameter_max': 2.6063934693}, 
-    "meters": {'estimated_diameter_min': 1165.6145946859, 'estimated_diameter_max': 2606.3934692836}, 
-    "miles": {'estimated_diameter_min': 0.7242791063, 'estimated_diameter_max': 1.6195373164}, 
     "feet": {'estimated_diameter_min': 3824.1949868293, 'estimated_diameter_max': 8551.1599497643}, 
+    "miles": {'estimated_diameter_min': 0.7242791063, 'estimated_diameter_max': 1.6195373164}, 
+    "meters": {'estimated_diameter_min': 1165.6145946859, 'estimated_diameter_max': 2606.3934692836}, 
+    "kilometers": {'estimated_diameter_min': 1.1656145947, 'estimated_diameter_max': 2.6063934693}, 
+
 }
 
 is_potentially_hazardous_asteroid = False
@@ -2580,6 +2581,7 @@ close_approach_data = {
        }, 
        "orbiting_body": "Earth", 
    }, 
+
 }
 
 orbital_data = {
@@ -2610,6 +2612,7 @@ orbital_data = {
         "description": "Near-Earth asteroid orbits which cross the Earthfs orbit similar to that of 1862 Apollo", 
         "orbit_class_range": "a (semi-major axis) > 1.0 AU; q (perihelion) < 1.017 AU", 
     }
+
 
 }
 
