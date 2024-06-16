@@ -10,8 +10,39 @@ earth_ad = "https://api.nasa.gov/planetary/earth/assets?lon=-95.33&lat=29.78&dat
 neo_browse = "https://api.nasa.gov/neo/rest/v1/neo/browse"
 
 
+def _neows_list_update(new_list=None, origin_file=''):
+    text_field = Text()
+
+    if new_list is None:
+        file = open(r'..\api_data\all_neows.py', 'w+')
+
+        principal_list_string = "\n\nneows_list_names = list()\n\n"
+        text_field.insert(1.0, principal_list_string)
+
+        file.write(text_field.get(1.0, END))
+        file.close()
+
+    elif type(new_list) is str:
+        old_file = open(r'..\api_data\all_neows.py', 'r+')
+        text_field.insert(1.0, old_file.read())
+        old_file.close()
+
+        new_file = open(r'..\api_data\all_neows.py', 'w+')
+
+        new_list_string = f"neows_list_names.append({new_list})"
+        text_field.insert(END, new_list_string)
+
+        new_import_string = f"from api_data.all_neows.{origin_file} import {new_list}\n"
+        text_field.insert(1.0, new_import_string)
+
+        new_file.write(text_field.get(1.0, END))
+        new_file.close()
+
+
 def update_and_save_neows_data():
     text_field = Text()
+
+    _neows_list_update()
 
     required = make_request(neo_browse, demo_key)
     neo_ws = required["near_earth_objects"]
@@ -22,6 +53,7 @@ def update_and_save_neows_data():
     for i in neo_ws:
 
         file_name = i['name_limited']
+        files_list_name = f'{i["name_limited"].lower()}_all_data'
 
         completed_address = r'{}\{}.{}'.format(local_address, file_name, format_type)
         file = open(completed_address, 'w+')
@@ -29,8 +61,10 @@ def update_and_save_neows_data():
         title = f'#  {file_name}\n\n\n'
         text_field.insert(1.0, title)
 
-        create_principal_dict = f'{i["name_limited"].lower()}_all_data = dict()\n\n\n'
+        create_principal_dict = f'{files_list_name} = dict()\n\n\n'
         text_field.insert(END, create_principal_dict)
+
+        _neows_list_update(files_list_name, file_name)
 
         for j in i:
 

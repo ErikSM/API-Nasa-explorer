@@ -12,7 +12,6 @@ Asteroid team (http://neo.jpl.nasa.gov/).
 This API is maintained by SpaceRocks Team: David Greenfield, Arezu 
 Sarvestani, Jason English and Peter Baunach."""
 
-
 neows_keys = [
     "is_potentially_hazardous_asteroid",
     "neo_reference_id",
@@ -29,14 +28,38 @@ neows_keys = [
     "close_approach_data"
 ]
 
+about_open_science_data_repository_public_api = """
 
-Open_Science_Data_Repository_Public_APIb = """Experiments, Missions, Payloads, Hardware, Vehicles, 
-Subjects, Biospecimens
+ --  ****  (About: Open Science Data Repository Public API )  --
 
+NASA OSDR provides a RESTful Application Programming Interface (API) to its full-text 
+search, data file retrieval, and metadata retrieval capabilities. The API provides a choice 
+of standard web output formats, either JavaScript Object Notation (JSON) or Hyper Text 
+Markup Language (HTML), of query results. The Data File API returns metadata on data files 
+associated with dataset(s), including the location of these files for download via https. 
+The Metadata API returns entire sets of metadata for input study dataset accession numbers. 
+The Search API can be used to search dataset metadata by keywords and/or metadata. It can 
+also be used to provide search of three other omics databases: the National Institutes of 
+Health (NIH) / National Center for Biotechnology Information's (NCBI) Gene Expression 
+Omnibus (GEO); the European Bioinformatics Institute's (EBI) Proteomics Identification 
+(PRIDE); the Argonne National Laboratory's (ANL) Metagenomics Rapid Annotations using 
+Subsystems Technology (MG-RAST).
+
+In addition to study datasets, NASA OSDR also hosts metadata for 7 other data types: 
+experiments, payloads, subjects, biospecimens, missions, vehicles, and hardware. The API for 
+these data types is listed separately and uniform throughout, to make for easy metadata 
+exploration.
+
+
+**(Study)
+Study Data File API:
+Syntax = https://osdr.nasa.gov/osdr/data/osd/files/{OSD_STUDY_IDs}/?page={CURRENT_PAGE_NUMBER}&size=
+{RESULTS_PER_PAGE}?all_files={ALL_FILES}
+
+**(Experiments, Missions, Payloads, Hardware, Vehicles, Subjects, Biospecimens)
 Format:
-Experiments, Missions, Payloads, Hardware, Vehicles, Subjects, and Biospecimens follow the 
-same API format. The "All" call returns a list of all objects within that data type, while 
-the "Single" call returns an expanded version of a specific object. The endpoint for any 
+follow the  same API format. The "All" call returns a list of all objects within that data type, 
+while the "Single" call returns an expanded version of a specific object. The endpoint for any 
 single object can be selected from the "All" call. Some objects may include links to other 
 objects within the API, such as a vehicle within a mission.
 
@@ -62,7 +85,29 @@ Biospecimen:
 All: https://osdr.nasa.gov/geode-py/ws/api/biospecimens
 Single: https://osdr.nasa.gov/geode-py/ws/api/biospecimen/ + identifier
 
-*Examples:
+Examples:
 Single Mission Call
-https://osdr.nasa.gov/geode-py/ws/api/mission/SpaceX-12"""
+https://osdr.nasa.gov/geode-py/ws/api/mission/SpaceX-12
 
+
+** (Resources)
+For more information on making API requests with python, 
+visit https://www.dataquest.io/blog/python-api-tutorial/.
+"""
+
+about_donki = """
+
+    --  **** (The Space Weather Database Of Notifications, Knowledge, Information (DONKI))  ---
+    
+is a comprehensive on-line tool for space weather forecasters, scientists, and the general 
+space science community. DONKI chronicles the daily interpretations of space weather observations, 
+analysis, models, forecasts, and notifications provided by the Space Weather Research Center (SWRC), 
+comprehensive knowledge-base search functionality to support anomaly resolution and space science 
+research, intelligent linkages, relationships, cause-and-effects between space weather activities 
+and comprehensive webservice API access to information stored in DONKI.
+
+This API consists of the following component services:
+Coronal Mass Ejection (CME), Coronal Mass Ejection (CME) Analysis, Geomagnetic Storm (GST),
+Interplanetary Shock (IPS), Solar Flare (FLR), Solar Energetic Particle (SEP), Magnetopause Crossing (MPC),
+Radiation Belt Enhancement (RBE), Hight Speed Stream (HSS), WSA+EnlilSimulation, Notifications.
+"""
