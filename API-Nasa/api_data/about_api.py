@@ -1,3 +1,5 @@
+
+
 about_neows = """Asteroids - NeoWs
 
 NeoWs (Near Earth Object Web Service) is a RESTful web service for
@@ -11,6 +13,7 @@ Asteroid team (http://neo.jpl.nasa.gov/).
 
 This API is maintained by SpaceRocks Team: David Greenfield, Arezu 
 Sarvestani, Jason English and Peter Baunach."""
+
 
 neows_keys = [
     "is_potentially_hazardous_asteroid",
@@ -27,6 +30,7 @@ neows_keys = [
     "designation",
     "close_approach_data"
 ]
+
 
 about_open_science_data_repository_public_api = """
 
@@ -53,8 +57,8 @@ exploration.
 
 **(Study)
 Study Data File API:
-Syntax = https://osdr.nasa.gov/osdr/data/osd/files/{OSD_STUDY_IDs}/?page={CURRENT_PAGE_NUMBER}&size=
-{RESULTS_PER_PAGE}?all_files={ALL_FILES}
+Syntax = https://osdr.nasa.gov/osdr/data/osd/files/{OSD_STUDY_IDs}/?page={CURRENT_PAGE_NUMBER}&
+size={RESULTS_PER_PAGE}?all_files={ALL_FILES}
 
 **(Experiments, Missions, Payloads, Hardware, Vehicles, Subjects, Biospecimens)
 Format:
@@ -89,11 +93,11 @@ Examples:
 Single Mission Call
 https://osdr.nasa.gov/geode-py/ws/api/mission/SpaceX-12
 
-
 ** (Resources)
 For more information on making API requests with python, 
 visit https://www.dataquest.io/blog/python-api-tutorial/.
 """
+
 
 about_donki = """
 
@@ -111,3 +115,4 @@ Coronal Mass Ejection (CME), Coronal Mass Ejection (CME) Analysis, Geomagnetic S
 Interplanetary Shock (IPS), Solar Flare (FLR), Solar Energetic Particle (SEP), Magnetopause Crossing (MPC),
 Radiation Belt Enhancement (RBE), Hight Speed Stream (HSS), WSA+EnlilSimulation, Notifications.
 """
+
