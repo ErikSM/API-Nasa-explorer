@@ -1,5 +1,3 @@
-
-
 about_neows = """Asteroids - NeoWs
 
 NeoWs (Near Earth Object Web Service) is a RESTful web service for
@@ -13,7 +11,6 @@ Asteroid team (http://neo.jpl.nasa.gov/).
 
 This API is maintained by SpaceRocks Team: David Greenfield, Arezu 
 Sarvestani, Jason English and Peter Baunach."""
-
 
 neows_keys = [
     "is_potentially_hazardous_asteroid",
@@ -30,7 +27,6 @@ neows_keys = [
     "designation",
     "close_approach_data"
 ]
-
 
 about_open_science_data_repository_public_api = """
 
@@ -98,7 +94,6 @@ For more information on making API requests with python,
 visit https://www.dataquest.io/blog/python-api-tutorial/.
 """
 
-
 about_donki = """
 
     --  **** (The Space Weather Database Of Notifications, Knowledge, Information (DONKI))  ---
@@ -116,3 +111,16 @@ Interplanetary Shock (IPS), Solar Flare (FLR), Solar Energetic Particle (SEP), M
 Radiation Belt Enhancement (RBE), Hight Speed Stream (HSS), WSA+EnlilSimulation, Notifications.
 """
 
+donki_keys = [
+    "Coronal Mass Ejection (CME)",
+    "Coronal Mass Ejection (CME) Analysis",
+    "Geomagnetic Storm (GST)",
+    "Interplanetary Shock (IPS)",
+    "Solar Flare (FLR)",
+    "Solar Energetic Particle (SEP)",
+    "Magnetopause Crossing (MPC)",
+    "Radiation Belt Enhancement (RBE)",
+    "Hight Speed Stream (HSS)",
+    "WSA+EnlilSimulation",
+    "Notifications",
+]

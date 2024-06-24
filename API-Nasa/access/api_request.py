@@ -12,7 +12,7 @@ neo_browse = "https://api.nasa.gov/neo/rest/v1/neo/browse"
 
 
 def make_request(address_captured, key):
-    key_used = '?api_key={}'.format(key)
+    key_used = '&api_key={}'.format(key)
 
     request = requests.get(f"{address_captured}{key_used}", )
     required_dict = json.loads(request.text)
