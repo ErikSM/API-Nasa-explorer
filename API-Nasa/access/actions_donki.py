@@ -17,6 +17,8 @@ def _setter_date(start_date, end_date):
 def open_donki(donki_address):
     address = source_address + donki_address
 
+    print(address + api_key)
+
     requested = make_request(address, api_key)
 
     return requested
@@ -27,6 +29,12 @@ def coronal_mass_ejection(start_date, end_date):
 
     address = f"CME?{set_date}"
 
+    return address
+
+
+def parameters_of_cme():
+    data_name = "Coronal Mass Ejection"
+
     parameters = [
         "'startDate' and 'endDate': are in format 'yyyy-MM-dd' UT",
         "startDate: default to 30 days prior to current UTC date",
@@ -35,10 +43,10 @@ def coronal_mass_ejection(start_date, end_date):
 
     acronym = "CME"
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-donki_dict['Coronal Mass Ejection (CME)'] = coronal_mass_ejection
+donki_dict['Coronal Mass Ejection (CME)'] = coronal_mass_ejection, parameters_of_cme
 
 
 def coronal_mass_ejection_analysis(start_date, end_date,
@@ -50,6 +58,12 @@ def coronal_mass_ejection_analysis(start_date, end_date,
                f"speed={speed}&"
                f"halfAngle={half_angle}&"
                f"catalog={catalog}")
+
+    return address
+
+
+def parameter_of_cma():
+    data_name = "Coronal Mass Ejection Analysis"
 
     parameters = [
         "'startDate' and 'endDate': are in format 'yyyy-MM-dd' UT",
@@ -65,16 +79,22 @@ def coronal_mass_ejection_analysis(start_date, end_date,
 
     acronym = 'CMA'
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-donki_dict['Coronal Mass Ejection (CME) Analysis'] = coronal_mass_ejection_analysis
+donki_dict['Coronal Mass Ejection Analysis (CMA)'] = coronal_mass_ejection_analysis, parameter_of_cma
 
 
 def geomagnetic_storm(start_date, end_date):
     set_date = _setter_date(start_date, end_date)
 
     address = f"GST?{set_date}"
+
+    return address
+
+
+def parameter_of_gst():
+    data_name = "Geomagnetic Storm"
 
     parameters = [
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
@@ -84,10 +104,10 @@ def geomagnetic_storm(start_date, end_date):
 
     acronym = 'GST'
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-donki_dict['Geomagnetic Storm (GST)'] = geomagnetic_storm
+donki_dict['Geomagnetic Storm (GST)'] = geomagnetic_storm, parameter_of_gst
 
 
 def interplanetary_shock(start_date, end_date,
@@ -95,6 +115,12 @@ def interplanetary_shock(start_date, end_date,
     set_date = _setter_date(start_date, end_date)
 
     address = f"IPS?{set_date}&location={location}&catalog={catalog}"
+
+    return address
+
+
+def parameters_of_ips():
+    data_name = "Interplanetary Shock"
 
     parameters = [
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
@@ -106,16 +132,22 @@ def interplanetary_shock(start_date, end_date,
 
     acronym = 'IPS'
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-donki_dict['Interplanetary Shock (IPS)'] = interplanetary_shock
+donki_dict['Interplanetary Shock (IPS)'] = interplanetary_shock, parameters_of_ips
 
 
 def solar_flare(start_date, end_date):
     set_date = _setter_date(start_date, end_date)
 
     address = f"FLR?{set_date}"
+
+    return address
+
+
+def parameter_of_flr():
+    data_name = "Solar Flare"
 
     parameters = [
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
@@ -125,16 +157,22 @@ def solar_flare(start_date, end_date):
 
     acronym = 'FLR'
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-donki_dict['Solar Flare (FLR)'] = solar_flare
+donki_dict['Solar Flare (FLR)'] = solar_flare, parameter_of_flr
 
 
 def solar_energetic_particle(start_date, end_date):
     set_date = _setter_date(start_date, end_date)
 
     address = f"SEP?{set_date}"
+
+    return address
+
+
+def parameter_of_sep():
+    data_name = "Solar Energetic Particle"
 
     parameters = [
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
@@ -144,16 +182,22 @@ def solar_energetic_particle(start_date, end_date):
 
     acronym = 'SEP'
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-donki_dict['Solar Energetic Particle (SEP)'] = solar_energetic_particle
+donki_dict['Solar Energetic Particle (SEP)'] = solar_energetic_particle, parameter_of_sep
 
 
 def magneto_pause_crossing(start_date, end_date):
     set_date = _setter_date(start_date, end_date)
 
     address = f"MPC?{set_date}"
+
+    return address
+
+
+def parameter_of_mpc():
+    data_name = "Magnetopause Crossing"
 
     parameters = [
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
@@ -163,16 +207,22 @@ def magneto_pause_crossing(start_date, end_date):
 
     acronym = 'MPC'
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-donki_dict['Magnetopause Crossing (MPC)'] = magneto_pause_crossing
+donki_dict['Magnetopause Crossing (MPC)'] = magneto_pause_crossing, parameter_of_mpc
 
 
 def radiation_belt_enhancement(start_date, end_date):
     set_date = _setter_date(start_date, end_date)
 
     address = f"RBE?{set_date}"
+
+    return address
+
+
+def parameter_of_rbe():
+    data_name = "Radiation Belt Enhancement"
 
     parameters = [
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
@@ -182,16 +232,22 @@ def radiation_belt_enhancement(start_date, end_date):
 
     acronym = 'RBE'
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-donki_dict['Radiation Belt Enhancement (RBE)'] = radiation_belt_enhancement
+donki_dict['Radiation Belt Enhancement (RBE)'] = radiation_belt_enhancement, parameter_of_rbe
 
 
 def hight_speed_stream(start_date, end_date):
     set_date = _setter_date(start_date, end_date)
 
     address = f"HSS?{set_date}"
+
+    return address
+
+
+def parameter_of_hss():
+    data_name = "Hight Speed Stream"
 
     parameters = [
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
@@ -201,16 +257,22 @@ def hight_speed_stream(start_date, end_date):
 
     acronym = 'HSS'
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-donki_dict['Hight Speed Stream (HSS)'] = hight_speed_stream
+donki_dict['Hight Speed Stream (HSS)'] = hight_speed_stream, parameter_of_hss
 
 
 def wsa_and_enlil_simulation(start_date, end_date):
     set_date = _setter_date(start_date, end_date)
 
     address = f"WSAEnlilSimulations?{set_date}"
+
+    return address
+
+
+def parameter_of_wsa_es():
+    data_name = "WSA + Enlil Simulation"
 
     parameters = [
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
@@ -220,16 +282,22 @@ def wsa_and_enlil_simulation(start_date, end_date):
 
     acronym = 'WSA+ES'
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-donki_dict['WSA+EnlilSimulation'] = wsa_and_enlil_simulation
+donki_dict['WSA+EnlilSimulation'] = wsa_and_enlil_simulation, parameter_of_wsa_es
 
 
 def donki_notices(start_date, end_date,
                   type_n='all'):
     set_date = _setter_date(start_date, end_date)
     address = f"notifications?{set_date}&type={type_n}"
+
+    return address
+
+
+def parameter_of_ntf():
+    data_name = "Notifications"
 
     parameters = [
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
@@ -243,13 +311,16 @@ def donki_notices(start_date, end_date,
 
     acronym = 'NTF'
 
-    return address, parameters, acronym
+    return data_name, parameters, acronym
 
 
-def test_donki(donki):
-    cme = donki("2015-08-01", "2015-09-01")
+donki_dict['Notifications'] = wsa_and_enlil_simulation, parameter_of_ntf
 
-    test = open_donki(cme[0])
+
+def test_donki(donki_address):
+    donki = donki_address("2015-08-01", "2015-09-01")
+
+    test = open_donki(donki)
 
     print(f"(({len(test)} {type(test)}))\n")
     for i in test:
@@ -257,4 +328,3 @@ def test_donki(donki):
 
 
 test_donki(coronal_mass_ejection)
-
