@@ -4,7 +4,7 @@
 anteros_all_data = dict()
 
 
-links = {'self': 'http://api.nasa.gov/neo/rest/v1/neo/2001943?api_key=DEMO_KEY'}
+links = {'self': 'http://api.nasa.gov/neo/rest/v1/neo/2001943?api_key=NgtvBLp13upL4FK2z6qyWSRJNcJ3U1w4fJcokZmi'}
 
 id_code = "2001943"
 
@@ -688,7 +688,7 @@ orbital_data = {
     "equinox": "J2000", 
     "orbit_class": {
         "orbit_class_type": "AMO", 
-        "description": "Near-Earth asteroid orbits similar to that of 1221 Amor", 
+        "description": b'Near-Earth asteroid orbits similar to that of 1221 Amor', 
         "orbit_class_range": "1.017 AU < q (perihelion) < 1.3 AU", 
     }
 

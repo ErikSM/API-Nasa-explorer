@@ -4,7 +4,7 @@
 geographos_all_data = dict()
 
 
-links = {'self': 'http://api.nasa.gov/neo/rest/v1/neo/2001620?api_key=DEMO_KEY'}
+links = {'self': 'http://api.nasa.gov/neo/rest/v1/neo/2001620?api_key=NgtvBLp13upL4FK2z6qyWSRJNcJ3U1w4fJcokZmi'}
 
 id_code = "2001620"
 
@@ -1351,7 +1351,8 @@ orbital_data = {
     "equinox": "J2000", 
     "orbit_class": {
         "orbit_class_type": "APO", 
-        "description": "Near-Earth asteroid orbits which cross the Earthfs orbit similar to that of 1862 Apollo", 
+        "description": b'Near-Earth asteroid orbits which cross the Earth\xe2\x80\x99s orbit similar to'
+                       b' that of 1862 Apollo', 
         "orbit_class_range": "a (semi-major axis) > 1.0 AU; q (perihelion) < 1.017 AU", 
     }
 

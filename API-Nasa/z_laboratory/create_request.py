@@ -75,6 +75,6 @@ def exploring_donki_s(donki_selected):
         print(f'**{len(i)}{type(i)}')
 
 
-exploring_donki_s("Coronal Mass Ejection (CME) Analysis")
+# exploring_donki_s("Coronal Mass Ejection (CME) Analysis")
 
 

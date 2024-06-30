@@ -1,17 +1,10 @@
 from access.api_request import make_request, api_key
 
-source_address = "https://api.nasa.gov/DONKI/"
 
-donki_dict = dict()
+source_address = "https://api.nasa.gov/DONKI/"
 
 all_acronyms = ["CME", "CMA", "GST", "IPS", "FLR", "SEP",
                 "MPC", "RBE", "HSS", "WSA+ES", "NTF"]
-
-
-def _setter_date(start_date, end_date):
-    date = f"startDate={start_date}&endDate={end_date}"
-
-    return date
 
 
 def open_donki(donki_address):
@@ -22,6 +15,12 @@ def open_donki(donki_address):
     requested = make_request(address, api_key)
 
     return requested
+
+
+def _setter_date(start_date, end_date):
+    date = f"startDate={start_date}&endDate={end_date}"
+
+    return date
 
 
 def coronal_mass_ejection(start_date, end_date):
@@ -36,6 +35,7 @@ def parameters_of_cme():
     data_name = "Coronal Mass Ejection"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate': are in format 'yyyy-MM-dd' UT",
         "startDate: default to 30 days prior to current UTC date",
         "endDate: default to current UTC date"""
@@ -44,9 +44,6 @@ def parameters_of_cme():
     acronym = "CME"
 
     return data_name, parameters, acronym
-
-
-donki_dict['Coronal Mass Ejection (CME)'] = coronal_mass_ejection, parameters_of_cme
 
 
 def coronal_mass_ejection_analysis(start_date, end_date,
@@ -66,6 +63,7 @@ def parameter_of_cma():
     data_name = "Coronal Mass Ejection Analysis"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate': are in format 'yyyy-MM-dd' UT",
         "startDate: default to 30 days prior to current UTC date",
         "endDate: default to current UTC date"""
@@ -82,9 +80,6 @@ def parameter_of_cma():
     return data_name, parameters, acronym
 
 
-donki_dict['Coronal Mass Ejection Analysis (CMA)'] = coronal_mass_ejection_analysis, parameter_of_cma
-
-
 def geomagnetic_storm(start_date, end_date):
     set_date = _setter_date(start_date, end_date)
 
@@ -97,6 +92,7 @@ def parameter_of_gst():
     data_name = "Geomagnetic Storm"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
         "startDate: default to 30 days prior to current UTC date",
         "endDate: default to current UTC date"""
@@ -105,9 +101,6 @@ def parameter_of_gst():
     acronym = 'GST'
 
     return data_name, parameters, acronym
-
-
-donki_dict['Geomagnetic Storm (GST)'] = geomagnetic_storm, parameter_of_gst
 
 
 def interplanetary_shock(start_date, end_date,
@@ -123,6 +116,7 @@ def parameters_of_ips():
     data_name = "Interplanetary Shock"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
         "startDate: default to 30 days prior to current UTC date",
         "endDate: default to current UTC date"""
@@ -133,9 +127,6 @@ def parameters_of_ips():
     acronym = 'IPS'
 
     return data_name, parameters, acronym
-
-
-donki_dict['Interplanetary Shock (IPS)'] = interplanetary_shock, parameters_of_ips
 
 
 def solar_flare(start_date, end_date):
@@ -150,6 +141,7 @@ def parameter_of_flr():
     data_name = "Solar Flare"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
         "startDate: default to 30 days prior to current UTC date",
         "endDate: default to current UTC date"""
@@ -158,9 +150,6 @@ def parameter_of_flr():
     acronym = 'FLR'
 
     return data_name, parameters, acronym
-
-
-donki_dict['Solar Flare (FLR)'] = solar_flare, parameter_of_flr
 
 
 def solar_energetic_particle(start_date, end_date):
@@ -175,6 +164,7 @@ def parameter_of_sep():
     data_name = "Solar Energetic Particle"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
         "startDate: default to 30 days prior to current UTC date",
         "endDate: default to current UTC date"""
@@ -183,9 +173,6 @@ def parameter_of_sep():
     acronym = 'SEP'
 
     return data_name, parameters, acronym
-
-
-donki_dict['Solar Energetic Particle (SEP)'] = solar_energetic_particle, parameter_of_sep
 
 
 def magneto_pause_crossing(start_date, end_date):
@@ -200,6 +187,7 @@ def parameter_of_mpc():
     data_name = "Magnetopause Crossing"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
         "startDate: default to 30 days prior to current UTC date",
         "endDate: default to current UTC date"""
@@ -208,9 +196,6 @@ def parameter_of_mpc():
     acronym = 'MPC'
 
     return data_name, parameters, acronym
-
-
-donki_dict['Magnetopause Crossing (MPC)'] = magneto_pause_crossing, parameter_of_mpc
 
 
 def radiation_belt_enhancement(start_date, end_date):
@@ -225,6 +210,7 @@ def parameter_of_rbe():
     data_name = "Radiation Belt Enhancement"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
         "startDate: default to 30 days prior to current UTC date",
         "endDate: default to current UTC date"""
@@ -233,9 +219,6 @@ def parameter_of_rbe():
     acronym = 'RBE'
 
     return data_name, parameters, acronym
-
-
-donki_dict['Radiation Belt Enhancement (RBE)'] = radiation_belt_enhancement, parameter_of_rbe
 
 
 def hight_speed_stream(start_date, end_date):
@@ -250,6 +233,7 @@ def parameter_of_hss():
     data_name = "Hight Speed Stream"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
         "startDate: default to 30 days prior to current UTC date",
         "endDate: default to current UTC date"""
@@ -258,9 +242,6 @@ def parameter_of_hss():
     acronym = 'HSS'
 
     return data_name, parameters, acronym
-
-
-donki_dict['Hight Speed Stream (HSS)'] = hight_speed_stream, parameter_of_hss
 
 
 def wsa_and_enlil_simulation(start_date, end_date):
@@ -275,6 +256,7 @@ def parameter_of_wsa_es():
     data_name = "WSA + Enlil Simulation"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
         "startDate: default to 7 days prior to current UTC date",
         "endDate: default to current UTC date"
@@ -283,9 +265,6 @@ def parameter_of_wsa_es():
     acronym = 'WSA+ES'
 
     return data_name, parameters, acronym
-
-
-donki_dict['WSA+EnlilSimulation'] = wsa_and_enlil_simulation, parameter_of_wsa_es
 
 
 def donki_notices(start_date, end_date,
@@ -300,6 +279,7 @@ def parameter_of_ntf():
     data_name = "Notifications"
 
     parameters = [
+        "Parameters rules: **",
         "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
         "'startDate' if left out would default to 7 days prior to the current UT date",
         "'endDate' if left out would default to current UT date",
@@ -313,18 +293,3 @@ def parameter_of_ntf():
 
     return data_name, parameters, acronym
 
-
-donki_dict['Notifications'] = wsa_and_enlil_simulation, parameter_of_ntf
-
-
-def test_donki(donki_address):
-    donki = donki_address("2015-08-01", "2015-09-01")
-
-    test = open_donki(donki)
-
-    print(f"(({len(test)} {type(test)}))\n")
-    for i in test:
-        print(f'**{len(i)}{type(i)}')
-
-
-test_donki(coronal_mass_ejection)

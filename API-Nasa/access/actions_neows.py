@@ -1,34 +1,35 @@
 from tkinter import Text, END
 from access.api_request import make_request
 
-
 api_key = "NgtvBLp13upL4FK2z6qyWSRJNcJ3U1w4fJcokZmi"
 demo_key = "DEMO_KEY"
 
+source_address = "https://api.nasa.gov/neo/rest/v1/neo/browse"
 
-neo_browse = "https://api.nasa.gov/neo/rest/v1/neo/browse"
 
-
-def _neows_list_update(new_list=None, origin_file=''):
+def _neows_list_update(new_list=None, origin_file='', name_full=''):
     text_field = Text()
 
     if new_list is None:
-        file = open(r'..\api_data\all_neows.py', 'w+')
+        file = open(r'..\api_data\neows_data.py', 'w+')
 
-        principal_list_string = "\n\nneows_list_names = list()\n\n"
-        text_field.insert(1.0, principal_list_string)
+        class_import_string = f"from objects.NeoWs import NeoWs\n"
+        text_field.insert(1.0, class_import_string)
+
+        principal_list_string = "\n\nneows_names = dict()\n\n"
+        text_field.insert(END, principal_list_string)
 
         file.write(text_field.get(1.0, END))
         file.close()
 
     elif type(new_list) is str:
-        old_file = open(r'..\api_data\all_neows.py', 'r+')
+        old_file = open(r'..\api_data\neows_data.py', 'r+')
         text_field.insert(1.0, old_file.read())
         old_file.close()
 
-        new_file = open(r'..\api_data\all_neows.py', 'w+')
+        new_file = open(r'..\api_data\neows_data.py', 'w+')
 
-        new_list_string = f"neows_list_names.append({new_list})"
+        new_list_string = f"neows_names['{name_full}'] = NeoWs({new_list})"
         text_field.insert(END, new_list_string)
 
         new_import_string = f"from api_data.all_neows.{origin_file} import {new_list}\n"
@@ -39,12 +40,12 @@ def _neows_list_update(new_list=None, origin_file=''):
 
 
 def update_and_save_neows_data():
-
     text_field = Text()
 
     _neows_list_update()
 
-    required = make_request(neo_browse, api_key)
+    required = make_request(source_address, api_key)
+
     neo_ws = required["near_earth_objects"]
 
     local_address = r'..\api_data\all_neows'
@@ -53,6 +54,7 @@ def update_and_save_neows_data():
     for i in neo_ws:
 
         file_name = i['name_limited']
+        neo_full_name = i['name']
         files_list_name = f'{i["name_limited"].lower()}_all_data'
 
         completed_address = r'{}\{}.{}'.format(local_address, file_name, format_type)
@@ -64,7 +66,7 @@ def update_and_save_neows_data():
         create_principal_dict = f'{files_list_name} = dict()\n\n\n'
         text_field.insert(END, create_principal_dict)
 
-        _neows_list_update(files_list_name, file_name)
+        _neows_list_update(files_list_name, file_name, neo_full_name)
 
         for j in i:
 
@@ -194,7 +196,14 @@ def _processing_orbital_data(all_data: dict):
                 key, data = j, all_data[i][j]
 
                 if key == "orbit_class_description":
-                    key_and_data = f'        "description": "{data}", \n'
+                    msg = data.encode("utf-8")
+
+                    if len(msg) > 70:
+                        key_and_data = (f'        "description": {msg[:69]}\n'
+                                        f'                       {msg[69:]}, \n')
+                    else:
+                        key_and_data = f'        "description": {msg}, \n'
+
                     text_field.insert(END, key_and_data)
 
                 else:
@@ -254,4 +263,3 @@ def _organizing_all_data_in_list(var, data):
 
 
 update_and_save_neows_data()
-
