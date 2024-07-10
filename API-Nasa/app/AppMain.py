@@ -3,8 +3,7 @@ from tkinter import *
 from api_data.about_api import about_api, about_neows, about_donki
 from api_data.donki_data import donki_dict
 from api_data.neows_data import neows_names
-
-color = {'VT': "#160E3D", 'BK': "black", 'WT': "white", 'GR': "grey20"}
+from app.app_configurations import color
 
 
 class AppMain:
@@ -12,6 +11,8 @@ class AppMain:
     def __init__(self):
 
         self.menu_selected = None
+        self.entry_field = dict()
+        self.all_buttons = dict()
 
         self.__root = Tk()
 
@@ -44,36 +45,35 @@ class AppMain:
         f_left = Frame(self.__f_body)
 
         self.box_left = Listbox(f_left, bg=color['GR'], fg=color['WT'], bd=10, width=35)
-        self.box_left.pack(side=LEFT)
+        self.box_left.pack(side=LEFT, fill=Y)
 
-        frame_button = Frame(f_left)
-        cont = 1
-        while cont < 7:
-            if cont == 1:
-                self.but_test_1 = Button(frame_button, width=8, command=self.select_item, text="Select")
-                self.but_test_1.grid(row=cont, column=0)
+        frame_buttons = Frame(f_left)
+        cont = 0
+        while cont < 8:
+            if cont == 2:
+                self.all_buttons[f'{cont}'] = Button(frame_buttons, width=8, command=self.select_item, text="Select")
+                self.all_buttons[f'{cont}'].grid(row=cont, column=0)
             else:
-                Button(frame_button, state=DISABLED, width=8).grid(row=cont, column=0)
+                self.all_buttons[f'{cont}'] = Button(frame_buttons, state=DISABLED, width=8)
+                self.all_buttons[f'{cont}'].grid(row=cont, column=0)
             cont += 1
-        frame_button.pack(side=LEFT)
+        frame_buttons.pack(side=LEFT)
 
         f_left.grid(row=1, column=1)
 
         f_right = Frame(self.__f_body)
 
-        frame_button = Frame(f_right)
-        cont = 1
-        while cont < 7:
-            if cont == 1:
-                self.but_test_2 = Button(frame_button, width=8, command=self.test_but2, text="----")
-                self.but_test_2.grid(row=cont, column=0)
-            else:
-                Button(frame_button, state=DISABLED, width=8).grid(row=cont, column=0)
+        frame_entries = Frame(f_right)
+        cont = 0
+        while cont < 8:
+            self.entry_field[f'{cont}'] = Entry(frame_entries, width=8, font=("Consolas", 14, "bold"))
+            self.entry_field[f'{cont}'].config(state=DISABLED)
+            self.entry_field[f'{cont}'].grid(row=cont, column=0)
             cont += 1
-        frame_button.pack(side=LEFT)
+        frame_entries.pack(side=LEFT)
 
         self.box_right = Listbox(f_right, bg=color['GR'], fg=color['BK'], bd=10, width=35)
-        self.box_right.pack(side=LEFT)
+        self.box_right.pack(side=LEFT, fill=Y)
 
         f_right.grid(row=1, column=2)
 
@@ -118,8 +118,10 @@ class AppMain:
                 basic_data = neo_ws.basic_data()
                 avd_data = neo_ws.advanced_data()
                 tch_data = neo_ws.technical_data()
+
             except AttributeError:
                 self.txt_under.insert(END, f'Error: Try again')
+
             else:
                 self.box_right.insert(END, '     **(Basic Information)**')
                 for i in basic_data:
@@ -140,20 +142,24 @@ class AppMain:
             donki = donki_dict.get(item_selected)
 
             try:
-                donki_parameter = donki[1]()
+                about_parameter = donki[1]()
             except TypeError:
                 self.txt_under.insert(END, f'Error: Try again')
             else:
-                for i in donki_parameter[1]:
+                parameters_rules = about_parameter['parameters'][0]
+                parameters_amount = about_parameter['parameters'][1]
+
+                for i in parameters_rules:
                     pmt_str = f'{i}\n'
                     self.txt_under.insert(END, pmt_str)
 
+                for i in self.entry_field:
+                    if int(i) < (int(parameters_amount)):
+                        self.entry_field[i].config(state=NORMAL)
+                    else:
+                        self.entry_field[i].config(state=DISABLED)
         else:
             self.txt_under.insert(END, 'Blank')
-
-    def test_but2(self):
-        self.txt_under.delete(1.0, END)
-        self.txt_under.insert(END, "--- press")
 
     def show_neows(self):
         self.menu_selected = 'neows'

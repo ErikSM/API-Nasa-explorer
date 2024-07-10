@@ -6,8 +6,10 @@ class NeoWs:
 
         try:
             self.__name = self.__all_info['name']
+
             self.__name_limited = self.__all_info['name_limited']
             self.__id_code = self.__all_info['id_code']
+
         except Exception as ex:
             self.__name = f'Error:{ex}'
 
