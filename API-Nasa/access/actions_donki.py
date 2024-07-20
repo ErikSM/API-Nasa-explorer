@@ -15,49 +15,55 @@ all_parameters = {
 
 generic_rules = [
     "Parameters rules: **",
-    "'startDate' and 'endDate': are in format 'yyyy-MM-dd' UT",
-    "startDate: default to 30 days prior to current UTC date",
-    "endDate: default to current UTC date"
+    "> 'startDate' and 'endDate': are in format 'yyyy-MM-dd' UT",
+    "> startDate: default to 30 days prior to current UTC date",
+    "> endDate: default to current UTC date"
 ]
 
 cme_a_rules = [
     "Parameters rules: **",
-    "'startDate' and 'endDate': are in format 'yyyy-MM-dd' UT",
-    "startDate: default to 30 days prior to current UTC date",
-    "endDate: default to current UTC date"""
-    "mostAccurateOnly: default is set to true",
-    "completeEntryOnly: default is set to true",
-    "speed (lower limit): default is set to 0",
-    "halfAngle (lower limit): default is set to 0",
-    "catalog: default is set to ALL (choices: ALL, SWRC_CATALOG, JANG_ET_AL_CATALOG)",
-    "keyword: default is set to NONE (example choices: swpc_annex)"
+    "> 'startDate' and 'endDate': are in format 'yyyy-MM-dd' UT",
+    "> startDate: default to 30 days prior to current UTC date",
+    "> endDate: default to current UTC date"""
+    "> mostAccurateOnly: default is set to true",
+    "> completeEntryOnly: default is set to true",
+    "> speed (lower limit): default is set to 0",
+    "> halfAngle (lower limit): default is set to 0",
+    "> catalog: default is set to ALL (choices: ALL, SWRC_CATALOG, "
+    "JANG_ET_AL_CATALOG)",
+    "> keyword: default is set to NONE (example choices: swpc_annex)"
 ]
 
 ips_rules = [
     "Parameters rules: **",
-    "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
-    "startDate: default to 30 days prior to current UTC date",
-    "endDate: default to current UTC date",
-    "location: default to ALL (choices: Earth, MESSENGER, STEREO A, STEREO B)",
-    "catalog: default to ALL (choices: SWRC_CATALOG, WINSLOW_MESSENGER_ICME_CATALOG)"
+    "> 'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
+    "> startDate: default to 30 days prior to current UTC date",
+    "> endDate: default to current UTC date",
+    "> location: default to ALL (choices: Earth, MESSENGER, "
+    "STEREO A, STEREO B)",
+    "> catalog: default to ALL (choices: SWRC_CATALOG, "
+    "WINSLOW_MESSENGER_ICME_CATALOG)"
 ]
 
 wsa_e_s_rules = [
     "Parameters rules: **",
-    "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
-    "startDate: default to 7 days prior to current UTC date",
-    "endDate: default to current UTC date"
+    "> 'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
+    "> startDate: default to 7 days prior to current UTC date",
+    "> endDate: default to current UTC date"
 ]
 
 notification_rules = [
     "Parameters rules: **",
-    "'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
-    "'startDate' if left out would default to 7 days prior to the current UT date",
-    "'endDate' if left out would default to current UT date",
-    "'type' could be: all, FLR, SEP, CME, IPS, MPC, GST, RBE, report",
-    "'type' if left out would default to 'all'",
-    """The request date range is limit to 30 days. If the request range is greater than 30 days, 
-    it would limit your request range to (endDate-30) to endDate."""
+    "> 'startDate' and 'endDate' are in format 'yyyy-MM-dd' UT",
+    "> 'startDate' if left out would default to 7 days prior to the "
+    "current UT date",
+    "> 'endDate' if left out would default to current UT date",
+    "> 'type' could be: all, FLR, SEP, CME, IPS, MPC, GST, RBE, "
+    "report",
+    "> 'type' if left out would default to 'all'",
+    """obs: The request date range is limit to 30 days. If the request 
+    range is greater than 30 days,  it would limit your request range 
+    to (endDate-30) to endDate."""
 ]
 
 
