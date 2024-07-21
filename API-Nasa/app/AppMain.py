@@ -1,5 +1,6 @@
 from tkinter import *
 
+from access.actions_donki import get_donki
 from api_data.about_api import about_api, about_neows, about_donki
 from api_data.donki_data import donki_names
 from api_data.neows_data import neows_names
@@ -12,6 +13,8 @@ class AppMain:
 
         self.donki = None
         self.neo_ws = None
+
+        self.activate_entries = False
 
         self.menu_selected = None
         self.item_selected = None
@@ -235,8 +238,32 @@ class AppMain:
                         self.all_buttons[f'{i}'].config(text=parameters_names[int(i)])
                     else:
                         self.all_buttons[f'{i}'].config(text='---')
+
+                self._do_request_donki()
         else:
             self.txt_under.insert(END, 'Blank')
+
+    def _do_request_donki(self):
+
+        donki_data = None
+
+        try:
+            address = self.donki[0]()
+            if not self.activate_entries:
+                donki_data = get_donki(address)
+        except Exception as ex:
+            self.txt_under.insert(END, f'Error: {ex}')
+        else:
+            self.txt_under.insert(END, f'[Data type:{type(donki_data)} // Has:({len(donki_data)})items]\n\n\n\n')
+
+            cont = 0
+            for i in donki_data:
+                self.txt_under.insert(END, f'>> Item[{cont}]: {len(i)} information data << : \n\n\n')
+                for j in i:
+                    self.txt_under.insert(END, f'**({j})** =  [  {i[j]}  ] ;\n')
+                    print(f'{i}: {i[j]}\n')
+                self.txt_under.insert(END, f'{"-" * 100}\n\n\n')
+                cont += 1
 
     def neo_ws_advanced(self, data):
 
@@ -252,9 +279,6 @@ class AppMain:
                 self.txt_under.insert(END, f'\n\n * [{i}]:\n\n')
                 for j in adv_selected[i]:
                     self.txt_under.insert(END, f'> {j}: {adv_selected[i][j]}\n')
-
-    def _request_neo_ws(self):
-        pass
 
 
 AppMain()

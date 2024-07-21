@@ -9,10 +9,15 @@ neo_adr = "https://api.nasa.gov/neo/rest/v1/neo/browse"
 donki_adr = "https://api.nasa.gov/DONKI/"
 
 
-def make_request(address_captured, key):
+def make_request(address_captured, key, complement=None):
     key_used = _preparing_api_key(address_captured, key)
 
-    request = requests.get(f"{address_captured}{key_used}", )
+    if complement is None:
+        address = address_captured
+    else:
+        address = address_captured + complement
+
+    request = requests.get(f"{address}{key_used}")
     required_dict = json.loads(request.text)
 
     return required_dict

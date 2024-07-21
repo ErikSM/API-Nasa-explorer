@@ -1,6 +1,4 @@
-from access.api_request import make_request, api_key
-
-source_address = "https://api.nasa.gov/DONKI/"
+from access.api_request import make_request, api_key, donki_adr
 
 all_acronyms = [
     "CME", "CMEAnalysis", "GST", "IPS", "FLR", "SEP", "MPC", "RBE", "HSS", "WSAEnlilSimulation", "Notifications"
@@ -67,12 +65,10 @@ notification_rules = [
 ]
 
 
-def get_donki(donki_address):
-    address = source_address + donki_address
+def get_donki(donki):
+    address = donki_adr
 
-    print(address + api_key)
-
-    requested = make_request(address, api_key)
+    requested = make_request(address, api_key, donki)
 
     return requested
 
@@ -83,7 +79,7 @@ def _setter_date(start_date='default', end_date='default'):
     return date
 
 
-def coronal_mass_ejection(start_date, end_date):
+def coronal_mass_ejection(start_date='default', end_date='default'):
     set_date = _setter_date(start_date, end_date)
 
     address = f"CME?{set_date}"

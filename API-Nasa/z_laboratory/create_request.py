@@ -1,7 +1,8 @@
 import json
 import requests
 
-from access.actions_donki import donki_dict, source_address
+from access.api_request import donki_adr
+from api_data.donki_data import donki_names
 
 api_key = "NgtvBLp13upL4FK2z6qyWSRJNcJ3U1w4fJcokZmi"
 demo_key = "DEMO_KEY"
@@ -19,7 +20,7 @@ def _create_request(address_captured, key):
     request = requests.get(f"{address_captured}{key_used}", )
     required_dict = json.loads(request.text)
 
-    print(f'\n??[[source_address_:  {address_captured}{key_used}]]??\n\n')
+    #print(f'\n??[[source_address_:  {address_captured}{key_used}]]??\n\n')
 
     return required_dict
 
@@ -54,27 +55,16 @@ def exploring_donki_s(donki_selected):
     #  "Magnetopause Crossing (MPC)","Radiation Belt Enhancement (RBE)", "Hight Speed Stream (HSS)",
     #  "WSA+EnlilSimulation","Notifications"
 
-    act_donki = donki_dict[donki_selected]
-
-    donki_source_address = source_address
-    donki_tuple = act_donki(start_date, end_date)
-
-    address = donki_source_address + donki_tuple[0]
-    about_parameters = donki_tuple[1]
-
-    print(f'DONKI: {donki_selected}\n')
-
-    for i in about_parameters:
-        print(i)
-    print("-"*30)
+    address = donki_adr + donki_names[donki_selected][0]()
 
     requested = _create_request(address, api_key)
     print(f"(({len(requested)} {type(requested)}))\n")
 
-    for i in requested:
+    """for i in requested:
         print(f'**{len(i)}{type(i)}')
+"""
 
 
-# exploring_donki_s("Coronal Mass Ejection (CME) Analysis")
-
-
+for i in donki_names:
+    print(i)
+    exploring_donki_s(i)
