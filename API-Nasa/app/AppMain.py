@@ -22,9 +22,13 @@ class AppMain:
         self.entry_field = dict()
         self.all_buttons = dict()
 
+        self.current_local = list()
+        self._path = ['../', ('neows', 'donki'), 'item']
+        self.current_local.append(self._path[0])
+
         self.__root = Tk()
 
-        img_logo = PhotoImage(file=r'..\assets\logo.png')
+        img_logo = PhotoImage(file=r'assets\logo.png')
 
         self.__root.title("AppMain")
         self.__root.geometry("+300+100")
@@ -52,7 +56,7 @@ class AppMain:
 
         f_left = Frame(__f_body)
 
-        self.select_button = Button(f_left, text="Select", width=8, bd=8, bg=color['GR_drk'])
+        self.select_button = Button(f_left, text=">>   Select ", width=8, bd=8, bg=color['GR_drk'])
         self.select_button.config(command=self.select_item)
         self.select_button.pack(fill=X)
 
@@ -76,8 +80,8 @@ class AppMain:
 
         f_right = Frame(__f_body)
 
-        self.return_button = Button(f_right, text="----", width=8, bd=8, bg=color['GR_drk'])
-        self.return_button.config(command=self.initial_settings, state=DISABLED)
+        self.return_button = Button(f_right, text=" Return   <<", width=8, bd=8, bg=color['GR_drk'])
+        self.return_button.config(command=self.do_return, state=NORMAL)
         self.return_button.pack(fill=X)
 
         entries_block = Frame(f_right)
@@ -136,6 +140,8 @@ class AppMain:
     def initial_settings(self):
         self.menu_selected = None
 
+        self.current_local = self._path[0]
+
         for i in self.all_buttons:
             self.all_buttons[i].config(state=DISABLED, text='---')
         for i in self.entry_field:
@@ -144,9 +150,29 @@ class AppMain:
         self._initial_msg()
         self._initial_list()
 
+    def do_return(self):
+        if self.current_local == self._path[1][0] or self.current_local == self._path[1][1]:
+            self.initial_settings()
+            print("1")
+
+        elif (self.current_local == (self._path[1][0], self._path[2]) or
+              self.current_local == (self._path[1][1], self._path[2])):
+
+            if self.current_local[0] == self._path[1][0]:
+                self.show_menu_neows()
+                print('2')
+            elif self.current_local[0] == self._path[1][1]:
+                self.show_menu_donki()
+                print('3')
+
+        else:
+            pass
+
     def show_menu_neows(self):
         self.initial_settings()
+
         self.menu_selected = 'neows'
+        self.current_local = self._path[1][0]
 
         self.listbox_left.delete(0, END)
         for i in neows_names:
@@ -157,7 +183,9 @@ class AppMain:
 
     def show_menu_donki(self):
         self.initial_settings()
+
         self.menu_selected = 'donki'
+        self.current_local = self._path[1][1]
 
         self.listbox_left.delete(0, END)
         for i in donki_names:
@@ -173,7 +201,8 @@ class AppMain:
         self.item_selected = self.listbox_left.get(ANCHOR)
 
         try:
-            self.txt_under.insert(END, f'--{self.menu_selected.title()}:  [  {self.item_selected.title()}  ]--\n\n\n\n')
+            title_string = f'--{self.menu_selected.title()}:  [  {self.item_selected.title()}  ]--\n\n\n\n'
+            self.txt_under.insert(END, title_string)
         except AttributeError:
             self.txt_under.insert(END, '[Error]--\n\n\n\n')
 
@@ -189,6 +218,12 @@ class AppMain:
                 self.txt_under.insert(END, f'Error: Try again')
 
             else:
+
+                self.current_local = self._path[1][0], self._path[2]
+
+                self.listbox_left.delete(0, END)
+                self.listbox_left.insert(END, self.item_selected)
+
                 self.listbox_right.insert(END, '     **(Basic Information)**')
                 for i in basic_data:
                     basic_str = f'{i}: {basic_data[i]}'
@@ -212,6 +247,7 @@ class AppMain:
                                                 command=lambda: self.neo_ws_advanced('orbital_data'))
 
         elif self.menu_selected == 'donki':
+
             self.donki = donki_names.get(self.item_selected)
 
             try:
@@ -219,6 +255,12 @@ class AppMain:
             except TypeError:
                 self.txt_under.insert(END, f'Error: Try again')
             else:
+
+                self.current_local = self._path[1][1], self._path[2]
+
+                self.listbox_left.delete(0, END)
+                self.listbox_left.insert(END, self.item_selected)
+
                 parameters_rules = about_parameter['parameters'][0]
                 parameters_amount = about_parameter['parameters'][1]
                 parameters_names = about_parameter['parameters'][2]
@@ -248,9 +290,13 @@ class AppMain:
         donki_data = None
 
         try:
-            address = self.donki[0]()
             if not self.activate_entries:
+                address = self.donki[0]()
                 donki_data = get_donki(address)
+
+            elif self.activate_entries:
+                pass
+
         except Exception as ex:
             self.txt_under.insert(END, f'Error: {ex}')
         else:
@@ -279,6 +325,3 @@ class AppMain:
                 self.txt_under.insert(END, f'\n\n * [{i}]:\n\n')
                 for j in adv_selected[i]:
                     self.txt_under.insert(END, f'> {j}: {adv_selected[i][j]}\n')
-
-
-AppMain()
