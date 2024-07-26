@@ -144,6 +144,8 @@ class AppMain:
 
         for i in self.all_buttons:
             self.all_buttons[i].config(state=DISABLED, text='---')
+
+        self.activate_entries = False
         for i in self.entry_field:
             self.entry_field[i].config(state=DISABLED)
 
@@ -158,9 +160,12 @@ class AppMain:
         elif (self.current_local == (self._path[1][0], self._path[2]) or
               self.current_local == (self._path[1][1], self._path[2])):
 
+            self.activate_entries = False
+
             if self.current_local[0] == self._path[1][0]:
                 self.show_menu_neows()
                 print('2')
+
             elif self.current_local[0] == self._path[1][1]:
                 self.show_menu_donki()
                 print('3')
@@ -204,112 +209,144 @@ class AppMain:
             title_string = f'--{self.menu_selected.title()}:  [  {self.item_selected.title()}  ]--\n\n\n\n'
             self.txt_under.insert(END, title_string)
         except AttributeError:
-            self.txt_under.insert(END, '[Error]--\n\n\n\n')
-
-        if self.menu_selected == 'neows':
-            self.neo_ws = neows_names.get(self.item_selected)
-
-            try:
-                basic_data = self.neo_ws.basic_data()
-                avd_data = self.neo_ws.advanced_data()
-                tch_data = self.neo_ws.technical_data()
-
-            except AttributeError:
-                self.txt_under.insert(END, f'Error: Try again')
-
-            else:
-
-                self.current_local = self._path[1][0], self._path[2]
-
-                self.listbox_left.delete(0, END)
-                self.listbox_left.insert(END, self.item_selected)
-
-                self.listbox_right.insert(END, '     **(Basic Information)**')
-                for i in basic_data:
-                    basic_str = f'{i}: {basic_data[i]}'
-                    self.listbox_right.insert(END, basic_str)
-
-                self.listbox_right.insert(END, '     **(Technical information)**')
-                for i in tch_data:
-                    tch_str = f'{i}: {tch_data[i]}'
-                    self.listbox_right.insert(END, tch_str)
-
-                self.txt_under.insert(END, '     **(Advanced Information)**\n\n')
-                for i in avd_data:
-                    avd_str = f'--- {i}:\n\n{avd_data[i]}\n\n\n'
-                    self.txt_under.insert(END, avd_str)
-
-                self.all_buttons[f'{0}'].config(state=NORMAL, text="Estimated diameter",
-                                                command=lambda: self.neo_ws_advanced('estimated_diameter'))
-                self.all_buttons[f'{1}'].config(state=NORMAL, text="Close approach data",
-                                                command=lambda: self.neo_ws_advanced('close_approach_data'))
-                self.all_buttons[f'{2}'].config(state=NORMAL, text="Orbital data",
-                                                command=lambda: self.neo_ws_advanced('orbital_data'))
-
-        elif self.menu_selected == 'donki':
-
-            self.donki = donki_names.get(self.item_selected)
-
-            try:
-                about_parameter = self.donki[1]()
-            except TypeError:
-                self.txt_under.insert(END, f'Error: Try again')
-            else:
-
-                self.current_local = self._path[1][1], self._path[2]
-
-                self.listbox_left.delete(0, END)
-                self.listbox_left.insert(END, self.item_selected)
-
-                parameters_rules = about_parameter['parameters'][0]
-                parameters_amount = about_parameter['parameters'][1]
-                parameters_names = about_parameter['parameters'][2]
-
-                for i in parameters_rules:
-                    pmt_str = f'{i}\n'
-                    self.listbox_right.insert(END, pmt_str)
-
-                for i in self.entry_field:
-                    if int(i) < int(parameters_amount):
-                        self.entry_field[i].config(state=NORMAL, bd=1)
-                    else:
-                        self.entry_field[i].config(state=DISABLED)
-
-                for i in self.all_buttons:
-                    if int(i) < int(parameters_amount):
-                        self.all_buttons[f'{i}'].config(text=parameters_names[int(i)])
-                    else:
-                        self.all_buttons[f'{i}'].config(text='---')
-
-                self._do_request_donki()
+            self.txt_under.insert(END, f'[Error]:--\n\n\n\n')
         else:
-            self.txt_under.insert(END, 'Blank')
 
-    def _do_request_donki(self):
+            if self.menu_selected == 'neows':
+
+                try:
+                    self.neo_ws = neows_names[self.item_selected]
+                except KeyError:
+                    self.txt_under.insert(END, f'Error: Try again')
+                else:
+                    self.current_local = self._path[1][0], self._path[2]
+
+                    self.listbox_left.delete(0, END)
+                    self.listbox_left.insert(END, self.item_selected)
+
+                    basic_data = self.neo_ws.basic_data()
+                    avd_data = self.neo_ws.advanced_data()
+                    tch_data = self.neo_ws.technical_data()
+
+                    self.listbox_right.insert(END, '     **(Basic Information)**')
+                    for i in basic_data:
+                        basic_str = f'{i}: {basic_data[i]}'
+                        self.listbox_right.insert(END, basic_str)
+
+                    self.listbox_right.insert(END, '     **(Technical information)**')
+                    for i in tch_data:
+                        tch_str = f'{i}: {tch_data[i]}'
+                        self.listbox_right.insert(END, tch_str)
+
+                    self.txt_under.insert(END, '     **(Advanced Information)**\n\n')
+                    for i in avd_data:
+                        avd_str = f'--- {i}:\n\n{avd_data[i]}\n\n\n'
+                        self.txt_under.insert(END, avd_str)
+
+                    self.all_buttons[f'{0}'].config(state=NORMAL, text="Estimated diameter",
+                                                    command=lambda: self.neo_ws_advanced('estimated_diameter'))
+                    self.all_buttons[f'{1}'].config(state=NORMAL, text="Close approach data",
+                                                    command=lambda: self.neo_ws_advanced('close_approach_data'))
+                    self.all_buttons[f'{2}'].config(state=NORMAL, text="Orbital data",
+                                                    command=lambda: self.neo_ws_advanced('orbital_data'))
+
+            elif self.menu_selected == 'donki':
+
+                self.donki = donki_names.get(self.item_selected)
+
+                try:
+                    about_parameter = self.donki[1]()
+                except TypeError:
+                    self.txt_under.insert(END, f'Error: Try again')
+                else:
+                    self.current_local = self._path[1][1], self._path[2]
+
+                    self.listbox_left.delete(0, END)
+                    self.listbox_left.insert(END, self.item_selected)
+
+                    parameters_rules = about_parameter['parameters'][0]
+                    self.listbox_right.insert(END, *parameters_rules)
+
+                    parameters_amount = about_parameter['parameters'][1]
+                    for i in self.entry_field:
+                        if int(i) < int(parameters_amount):
+                            self.entry_field[i].config(state=NORMAL, bd=1)
+                        else:
+                            self.entry_field[i].config(state=DISABLED)
+
+                    parameters_names = about_parameter['parameters'][2]
+                    for i in self.all_buttons:
+                        if int(i) < int(parameters_amount):
+                            self.all_buttons[f'{i}'].config(text=parameters_names[int(i)])
+                        else:
+                            self.all_buttons[f'{i}'].config(text='---')
+
+                    self._processing_donki(parameters_names)
+
+            else:
+
+                self.txt_under.insert(END, 'Blank')
+
+    def _processing_donki(self, parameters_names):
 
         donki_data = None
 
         try:
             if not self.activate_entries:
-                address = self.donki[0]()
-                donki_data = get_donki(address)
+                parameters_default = {i: '' for i in parameters_names}
+                data_type = self.donki[0](**parameters_default)
+
+                donki_data = get_donki(data_type)
 
             elif self.activate_entries:
-                pass
+                parameters_captured = self._get_donki_parameters(parameters_names)
+                data_type = self.donki[0](**parameters_captured)
+
+                donki_data = get_donki(data_type)
 
         except Exception as ex:
             self.txt_under.insert(END, f'Error: {ex}')
-        else:
-            self.txt_under.insert(END, f'[Data type:{type(donki_data)} // Has:({len(donki_data)})items]\n\n\n\n')
 
-            cont = 0
-            for i in donki_data:
-                self.txt_under.insert(END, f'>> Item[{cont}]: {len(i)} information data << : \n\n\n')
-                for j in i:
-                    self.txt_under.insert(END, f'**({j})** =  [  {i[j]}  ] ;\n')
-                    print(f'{i}: {i[j]}\n')
-                self.txt_under.insert(END, f'{"-" * 100}\n\n\n')
+        else:
+            if not self.activate_entries:
+
+                self.activate_entries = True
+                self.txt_under.insert(END, f'[Data type:{type(donki_data)} // Has:({len(donki_data)})items]\n\n\n\n')
+
+                cont = 0
+                for i in donki_data:
+                    self.txt_under.insert(END, f'>> Item[{cont}]: {len(i)} elements  << : \n\n\n')
+                    for j in i:
+                        self.txt_under.insert(END, f'**({j})** =  [  {i[j]}  ] ;\n\n')
+
+                    self.txt_under.insert(END, f'{"-" * 100}\n\n\n')
+                    cont += 1
+
+            elif self.activate_entries:
+
+                self.txt_under.insert(END, f'[Data type:{type(donki_data)} // Has:({len(donki_data)})items]\n\n\n\n')
+
+                cont = 0
+                for i in donki_data:
+                    self.txt_under.insert(END, f'>> Item[{cont}]: {len(i)} elements  << : \n\n\n')
+                    for j in i:
+                        self.txt_under.insert(END, f'**({j})** =  [  {i[j]}  ] ;\n\n')
+
+                    self.txt_under.insert(END, f'{"-" * 100}\n\n\n')
+                    cont += 1
+
+    def _get_donki_parameters(self, parameters_names):
+
+        parameters = dict()
+
+        cont = 0
+        while cont < len(parameters_names):
+            for i in parameters_names:
+                parameters[i] = self.entry_field[f'{cont}'].get()
+
                 cont += 1
+
+        return parameters
 
     def neo_ws_advanced(self, data):
 

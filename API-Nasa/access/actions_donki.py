@@ -65,10 +65,9 @@ notification_rules = [
 ]
 
 
-def get_donki(donki):
+def get_donki(data_type):
     address = donki_adr
-
-    requested = make_request(address, api_key, donki)
+    requested = make_request(address, api_key, data_type)
 
     return requested
 
@@ -79,9 +78,14 @@ def _setter_date(start_date='default', end_date='default'):
     return date
 
 
-def coronal_mass_ejection(start_date='default', end_date='default'):
-    set_date = _setter_date(start_date, end_date)
+def coronal_mass_ejection(**kwargs):
+    for i in kwargs.keys():
+        if kwargs[i] == '':
+            kwargs[i] = 'default'
 
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+
+    set_date = _setter_date(start_date, end_date)
     address = f"CME?{set_date}"
 
     return address
@@ -97,9 +101,23 @@ def parameters_of_cme():
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
 
 
-def coronal_mass_ejection_analysis(start_date='default', end_date='default',
-                                   most_accurate_only='default', complete_entry_only='default',
-                                   speed='0', half_angle='0', catalog='ALL'):
+def coronal_mass_ejection_analysis(**kwargs):
+
+    for i in kwargs.keys():
+
+        if kwargs[i] == '':
+
+            if i == 'Speed' or i == 'Half angle':
+                kwargs[i] = '0'
+            elif i == 'Catalog':
+                kwargs[i] = 'All'
+            else:
+                kwargs[i] = 'default'
+
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+    most_accurate_only, complete_entry_only = kwargs.get('Most accurate only'), kwargs.get('Complete entry only')
+    speed, half_angle, catalog = kwargs.get('Speed'), kwargs.get('Half angle'), kwargs.get('Catalog')
+
     set_date = _setter_date(start_date, end_date)
 
     address = (f"CMEAnalysis?{set_date}&"
@@ -122,9 +140,14 @@ def parameter_of_cme_analysis():
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
 
 
-def geomagnetic_storm(start_date='default', end_date='default'):
-    set_date = _setter_date(start_date, end_date)
+def geomagnetic_storm(**kwargs):
+    for i in kwargs.keys():
+        if kwargs[i] == '':
+            kwargs[i] = 'default'
 
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+
+    set_date = _setter_date(start_date, end_date)
     address = f"GST?{set_date}"
 
     return address
@@ -140,10 +163,19 @@ def parameter_of_gst():
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
 
 
-def interplanetary_shock(start_date='default', end_date='default',
-                         location='ALL', catalog='ALL'):
-    set_date = _setter_date(start_date, end_date)
+def interplanetary_shock(**kwargs):
 
+    for i in kwargs.keys():
+        if kwargs[i] == '':
+            if i == 'Location' or i == 'Catalog':
+                kwargs[i] = 'all'
+            else:
+                kwargs[i] = 'default'
+
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+    location, catalog = kwargs.get('Location'), kwargs.get('Catalog')
+
+    set_date = _setter_date(start_date, end_date)
     address = f"IPS?{set_date}&location={location}&catalog={catalog}"
 
     return address
@@ -159,9 +191,14 @@ def parameters_of_ips():
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
 
 
-def solar_flare(start_date='default', end_date='default'):
-    set_date = _setter_date(start_date, end_date)
+def solar_flare(**kwargs):
+    for i in kwargs.keys():
+        if kwargs[i] == '':
+            kwargs[i] = 'default'
 
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+
+    set_date = _setter_date(start_date, end_date)
     address = f"FLR?{set_date}"
 
     return address
@@ -176,9 +213,14 @@ def parameter_of_flr():
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
 
 
-def solar_energetic_particle(start_date='default', end_date='default'):
-    set_date = _setter_date(start_date, end_date)
+def solar_energetic_particle(**kwargs):
+    for i in kwargs.keys():
+        if kwargs[i] == '':
+            kwargs[i] = 'default'
 
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+
+    set_date = _setter_date(start_date, end_date)
     address = f"SEP?{set_date}"
 
     return address
@@ -194,9 +236,14 @@ def parameter_of_sep():
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
 
 
-def magneto_pause_crossing(start_date='default', end_date='default'):
-    set_date = _setter_date(start_date, end_date)
+def magneto_pause_crossing(**kwargs):
+    for i in kwargs.keys():
+        if kwargs[i] == '':
+            kwargs[i] = 'default'
 
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+
+    set_date = _setter_date(start_date, end_date)
     address = f"MPC?{set_date}"
 
     return address
@@ -212,9 +259,14 @@ def parameter_of_mpc():
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
 
 
-def radiation_belt_enhancement(start_date='default', end_date='default'):
-    set_date = _setter_date(start_date, end_date)
+def radiation_belt_enhancement(**kwargs):
+    for i in kwargs.keys():
+        if kwargs[i] == '':
+            kwargs[i] = 'default'
 
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+
+    set_date = _setter_date(start_date, end_date)
     address = f"RBE?{set_date}"
 
     return address
@@ -230,9 +282,18 @@ def parameter_of_rbe():
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
 
 
-def hight_speed_stream(start_date='default', end_date='default'):
-    set_date = _setter_date(start_date, end_date)
+def hight_speed_stream(**kwargs):
+    for i in kwargs.keys():
 
+        if kwargs[i] == '':
+            if i == 'end_date':
+                kwargs[i] = 'default'
+            elif i == 'start_date':
+                kwargs[i] = '1900-01-01'
+
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+
+    set_date = _setter_date(start_date, end_date)
     address = f"HSS?{set_date}"
 
     return address
@@ -248,10 +309,17 @@ def parameter_of_hss():
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
 
 
-def wsa_and_enlil_simulation(start_date='default', end_date='default'):
-    set_date = _setter_date(start_date, end_date)
+def wsa_and_enlil_simulation(**kwargs):
+    for i in kwargs.keys():
+        if kwargs[i] == '':
+            kwargs[i] = 'default'
 
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+
+    set_date = _setter_date(start_date, end_date)
     address = f"WSAEnlilSimulations?{set_date}"
+
+    print(address)
 
     return address
 
@@ -266,8 +334,17 @@ def parameter_of_wsa_es():
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
 
 
-def donki_notifications(start_date='default', end_date='default',
-                        type_n='all'):
+def donki_notifications(**kwargs):
+    for i in kwargs.keys():
+        if kwargs[i] == '':
+            if i == 'Type':
+                kwargs[i] = 'all'
+            else:
+                kwargs[i] = 'default'
+
+    start_date, end_date = kwargs.get("Start date"), kwargs.get("End date")
+    type_n = kwargs.get('Type')
+
     set_date = _setter_date(start_date, end_date)
     address = f"notifications?{set_date}&type={type_n}"
 
@@ -282,3 +359,6 @@ def parameter_of_notifications():
     acronym = 'Notifications'
 
     return {'data name': data_name, 'parameters': parameters, 'acronym': acronym}
+
+
+datas = {'start_date': "2013-01-01", 'end_date': ""}
