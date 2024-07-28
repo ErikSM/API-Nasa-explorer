@@ -17,10 +17,22 @@ def make_request(address_captured, key, complement=None):
     else:
         address = address_captured + complement
 
-    request = requests.get(f"{address}{key_used}")
-    required_dict = json.loads(request.text)
+    try:
+        request = requests.get(f"{address}{key_used}")
+        data_required = json.loads(request.text)
 
-    return required_dict
+    except Exception as ex:
+
+        if key_used[0] == '?':
+            data_required = {'Error[make_request]': ex}
+        elif key_used[0] == '&':
+            data_required = [{'Error[make_request]': ex}]
+        else:
+            data_required = f'Error[make_request]: {ex}'
+
+        print(data_required)
+
+    return data_required
 
 
 def _preparing_api_key(address, key):

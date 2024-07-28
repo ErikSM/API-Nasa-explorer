@@ -11,7 +11,10 @@ def _neows_list_update(new_list=None, origin_file='', name_full=''):
     text_field = Text()
 
     if new_list is None:
-        file = open(r'..\api_data\neows_data.py', 'w+')
+        try:
+            file = open(r'..\api_data\neows_data.py', 'w+')
+        except FileNotFoundError:
+            file = open(r'api_data\neows_data.py', 'w+')
 
         class_import_string = f"from objects.NeoWs import NeoWs\n"
         text_field.insert(1.0, class_import_string)
@@ -23,11 +26,18 @@ def _neows_list_update(new_list=None, origin_file='', name_full=''):
         file.close()
 
     elif type(new_list) is str:
-        old_file = open(r'..\api_data\neows_data.py', 'r+')
+        try:
+            old_file = open(r'..\api_data\neows_data.py', 'r+')
+        except FileNotFoundError:
+            old_file = open(r'api_data\neows_data.py', 'r+')
+
         text_field.insert(1.0, old_file.read())
         old_file.close()
 
-        new_file = open(r'..\api_data\neows_data.py', 'w+')
+        try:
+            new_file = open(r'..\api_data\neows_data.py', 'w+')
+        except FileNotFoundError:
+            new_file = open(r'api_data\neows_data.py', 'w+')
 
         new_list_string = f"neows_names['{name_full}'] = NeoWs({new_list})"
         text_field.insert(END, new_list_string)
@@ -40,82 +50,100 @@ def _neows_list_update(new_list=None, origin_file='', name_full=''):
 
 
 def update_and_save_neows_data():
+    print('start update')
     text_field = Text()
 
     _neows_list_update()
 
     required = make_request(source_address, api_key)
 
-    neo_ws = required["near_earth_objects"]
+    try:
+        neo_ws = required["near_earth_objects"]
 
-    local_address = r'..\api_data\all_neows'
-    format_type = 'py'
+    except Exception as ex:
+        print(f'error[update_and_save_data]: {ex}')
 
-    for i in neo_ws:
+    else:
+        for i in neo_ws:
 
-        file_name = i['name_limited']
-        neo_full_name = i['name']
-        files_list_name = f'{i["name_limited"].lower()}_all_data'
+            file_name = i['name_limited']
+            neo_full_name = i['name']
+            files_list_name = f'{i["name_limited"].lower()}_all_data'
 
-        completed_address = r'{}\{}.{}'.format(local_address, file_name, format_type)
-        file = open(completed_address, 'w+')
+            format_type = 'py'
+            try:
+                local_address = r'..\api_data\all_neows'
 
-        title = f'#  {file_name}\n\n\n'
-        text_field.insert(1.0, title)
+                completed_address = r'{}\{}.{}'.format(local_address, file_name, format_type)
+                file = open(completed_address, 'w+')
+                print('ok addr 1')
 
-        create_principal_dict = f'{files_list_name} = dict()\n\n\n'
-        text_field.insert(END, create_principal_dict)
+            except FileNotFoundError:
 
-        _neows_list_update(files_list_name, file_name, neo_full_name)
+                local_address = r'api_data\all_neows'
 
-        for j in i:
+                completed_address = r'{}\{}.{}'.format(local_address, file_name, format_type)
+                file = open(completed_address, 'w+')
+                print('ok addr 2')
 
-            if j == 'estimated_diameter':
+            title = f'#  {file_name}\n\n\n'
+            text_field.insert(1.0, title)
 
-                estimated_diameter_dict_open = f'{j} = ' + '{\n'
-                text_field.insert(END, estimated_diameter_dict_open)
+            create_principal_dict = f'{files_list_name} = dict()\n\n\n'
+            text_field.insert(END, create_principal_dict)
 
-                processed = _processing_estimates_data(i[j])
-                text_field.insert(END, processed.get(1.0, END))
+            _neows_list_update(files_list_name, file_name, neo_full_name)
 
-                estimated_diameter_dict_close = '}\n\n'
-                text_field.insert(END, estimated_diameter_dict_close)
+            for j in i:
 
-            elif j == 'close_approach_data':
+                if j == 'estimated_diameter':
 
-                close_approach_data_dict_open = f'{j} = ' + '{\n'
-                text_field.insert(END, close_approach_data_dict_open)
+                    estimated_diameter_dict_open = f'{j} = ' + '{\n'
+                    text_field.insert(END, estimated_diameter_dict_open)
 
-                processed = _processing_approach_data(i[j])
-                text_field.insert(END, processed.get(1.0, END))
+                    processed = _processing_estimates_data(i[j])
+                    text_field.insert(END, processed.get(1.0, END))
 
-                close_approach_data_dict_close = "}\n\n"
-                text_field.insert(END, close_approach_data_dict_close)
+                    estimated_diameter_dict_close = '}\n\n'
+                    text_field.insert(END, estimated_diameter_dict_close)
 
-            elif j == 'orbital_data':
+                elif j == 'close_approach_data':
 
-                orbital_data_dict_open = f'{j} = ' + '{\n'
-                text_field.insert(END, orbital_data_dict_open)
+                    close_approach_data_dict_open = f'{j} = ' + '{\n'
+                    text_field.insert(END, close_approach_data_dict_open)
 
-                processed = _processing_orbital_data(i[j])
-                text_field.insert(END, processed.get(1.0, END))
+                    processed = _processing_approach_data(i[j])
+                    text_field.insert(END, processed.get(1.0, END))
 
-                orbital_data_dict_close = "}\n\n"
-                text_field.insert(END, orbital_data_dict_close)
+                    close_approach_data_dict_close = "}\n\n"
+                    text_field.insert(END, close_approach_data_dict_close)
 
-            else:
+                elif j == 'orbital_data':
 
-                processed = _processing_simple_data(j, i[j])
-                text_field.insert(END, processed)
+                    orbital_data_dict_open = f'{j} = ' + '{\n'
+                    text_field.insert(END, orbital_data_dict_open)
 
-        for j in i:
-            organized = _organizing_all_data_in_list(j, i)
-            text_field.insert(END, organized)
+                    processed = _processing_orbital_data(i[j])
+                    text_field.insert(END, processed.get(1.0, END))
 
-        file.write(text_field.get(1.0, END))
+                    orbital_data_dict_close = "}\n\n"
+                    text_field.insert(END, orbital_data_dict_close)
 
-        file.close()
-        text_field.delete(1.0, END)
+                else:
+
+                    processed = _processing_simple_data(j, i[j])
+                    text_field.insert(END, processed)
+
+            for j in i:
+                organized = _organizing_all_data_in_list(j, i)
+                text_field.insert(END, organized)
+
+            file.write(text_field.get(1.0, END))
+
+            file.close()
+            text_field.delete(1.0, END)
+
+        print('finish update')
 
 
 def _processing_estimates_data(all_data: dict):
@@ -207,7 +235,6 @@ def _processing_orbital_data(all_data: dict):
                     text_field.insert(END, key_and_data)
 
                 else:
-
                     if type(data) is str:
                         data = f'"{data}"'
                     else:
@@ -260,6 +287,3 @@ def _organizing_all_data_in_list(var, data):
     add_in_list = f'{dict_name.lower()}_all_data["{var_name}"] = {var_name}\n'
 
     return add_in_list
-
-
-update_and_save_neows_data()

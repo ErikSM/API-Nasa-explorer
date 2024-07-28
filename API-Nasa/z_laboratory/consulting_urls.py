@@ -20,7 +20,7 @@ def page_url_in_tkinter(url_test):
 
 
 url_image = "https://apod.nasa.gov/apod/image/2405/AuroraStartrails_chiragupreti1024.jpg"
-#  page_url_in_tkinter(url_image)
+# page_url_in_tkinter(url_image)
 
 
 #  ----------------------------------------------------------------------------
