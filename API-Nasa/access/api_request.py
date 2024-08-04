@@ -24,11 +24,11 @@ def make_request(address_captured, key, complement=None):
     except Exception as ex:
 
         if key_used[0] == '?':
-            data_required = {'Error[make_request]': ex}
+            data_required = {'Error[make_request]': ex, 'Complement': f'{complement}', 'key': f'{key}'}
         elif key_used[0] == '&':
-            data_required = [{'Error[make_request]': ex}]
+            data_required = [{'Error[make_request]': ex, 'Complement': f'{complement}', 'key': f'{key}'}]
         else:
-            data_required = f'Error[make_request]: {ex}'
+            data_required = f'Error[make_request]: {ex}\n Complement: {complement}\n key: {key}'
 
         print(data_required)
 

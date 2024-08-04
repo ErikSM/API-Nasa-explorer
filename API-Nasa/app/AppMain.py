@@ -31,19 +31,22 @@ class AppMain:
 
         self.__root.title("AppMain")
         self.__root.geometry("+300+100")
-        self.__root.resizable(False, False)
+        self.__root.resizable(True, True)
         self.__root.config(bg=color['VT'])
 
         _menu = Menu(self.__root, bd=10)
-        self.__root.config(menu=_menu)
 
-        menu_options = Menu(_menu)
+        menu_browse = Menu(_menu, tearoff=0)
+        menu_browse.add_command(label='NEOWS', command=self.show_menu_neows)
+        menu_browse.add_command(label='DONKI', command=self.show_menu_donki)
+        _menu.add_cascade(label='Browse_APIs', menu=menu_browse)
+
+        menu_options = Menu(_menu, tearoff=0)
+        menu_options.add_command(label='Initial setting', command=self.initial_settings)
+        menu_options.add_command(label='NeoWs update data', command=self.update_neows)
         _menu.add_cascade(label='Options', menu=menu_options)
 
-        menu_options.add_command(label='NeoWs update', command=lambda: self.update_neows(self.__root))
-
-        _menu.add_command(label='NEOWS', command=self.show_menu_neows)
-        _menu.add_command(label='DONKI', command=self.show_menu_donki)
+        self.__root.config(menu=_menu)
 
         __f_head = Frame(self.__root, bg=color['VT'])
 
@@ -178,33 +181,7 @@ class AppMain:
         self.listbox_left.delete(0, END)
         self.listbox_right.delete(0, END)
 
-    def do_return(self):
-        if self.current_local == self._path[1][0] or self.current_local == self._path[1][1]:
-            self.initial_settings()
-            print("1")
-
-        elif (self.current_local == (self._path[1][0], self._path[2]) or
-              self.current_local == (self._path[1][1], self._path[2])):
-
-            self.activate_entries = False
-
-            for i in self.entry_field:
-                self.entry_field[i].config(state=NORMAL)
-                self.entry_field[i].delete(0, END)
-                self.entry_field[i].config(state=DISABLED)
-
-            if self.current_local[0] == self._path[1][0]:
-                self.show_menu_neows()
-                print('2')
-
-            elif self.current_local[0] == self._path[1][1]:
-                self.show_menu_donki()
-                print('3')
-
-        else:
-            pass
-
-    def update_neows(self, root: Tk):
+    def update_neows(self):
         update_and_save_neows_data()
         self.__root.destroy()
         AppMain()
@@ -234,6 +211,32 @@ class AppMain:
 
         self.txt_under.delete(1.0, END)
         self.txt_under.insert(END, about_donki)
+
+    def do_return(self):
+        if self.current_local == self._path[1][0] or self.current_local == self._path[1][1]:
+            self.initial_settings()
+            print("return1")
+
+        elif (self.current_local == (self._path[1][0], self._path[2]) or
+              self.current_local == (self._path[1][1], self._path[2])):
+
+            self.activate_entries = False
+
+            for i in self.entry_field:
+                self.entry_field[i].config(state=NORMAL)
+                self.entry_field[i].delete(0, END)
+                self.entry_field[i].config(state=DISABLED)
+
+            if self.current_local[0] == self._path[1][0]:
+                self.show_menu_neows()
+                print('return2')
+
+            elif self.current_local[0] == self._path[1][1]:
+                self.show_menu_donki()
+                print('return3')
+
+        else:
+            pass
 
     def select_item(self):
         self.txt_under.delete(1.0, END)
@@ -283,11 +286,11 @@ class AppMain:
                         self.txt_under.insert(END, avd_str)
 
                     self.all_buttons[f'{0}'].config(state=NORMAL, text="Estimated diameter",
-                                                    command=lambda: self.neo_ws_advanced('estimated_diameter'))
+                                                    command=lambda: self._neo_ws_advanced('estimated_diameter'))
                     self.all_buttons[f'{1}'].config(state=NORMAL, text="Close approach data",
-                                                    command=lambda: self.neo_ws_advanced('close_approach_data'))
+                                                    command=lambda: self._neo_ws_advanced('close_approach_data'))
                     self.all_buttons[f'{2}'].config(state=NORMAL, text="Orbital data",
-                                                    command=lambda: self.neo_ws_advanced('orbital_data'))
+                                                    command=lambda: self._neo_ws_advanced('orbital_data'))
 
             elif self.menu_selected == 'donki':
 
@@ -325,6 +328,22 @@ class AppMain:
             else:
                 self.txt_under.insert(END, 'Blank')
 
+    def _neo_ws_advanced(self, data):
+
+        self.txt_under.delete(2.0, END)
+
+        advanced_title = data.replace("_", " ")
+        self.txt_under.insert(END, f'\n\n\n     Advanced: {advanced_title.title()}    \n\n\n')
+
+        adv_selected = self.neo_ws.advanced_data(data)
+        for i in adv_selected:
+            if data == 'orbital_data':
+                self.txt_under.insert(END, f'> {i}:  {adv_selected[i]}\n\n')
+            else:
+                self.txt_under.insert(END, f'\n\n * [{i}]:\n\n')
+                for j in adv_selected[i]:
+                    self.txt_under.insert(END, f'> {j}: {adv_selected[i][j]}\n')
+
     def _processing_donki(self, parameters_names):
 
         donki_data = None
@@ -348,7 +367,6 @@ class AppMain:
         else:
 
             self.txt_under.insert(END, f'[Data type:{type(donki_data)} // Has:({len(donki_data)})items]\n\n\n\n')
-
             self.activate_entries = True
 
             cont = 0
@@ -372,18 +390,3 @@ class AppMain:
                 cont += 1
 
         return parameters
-
-    def neo_ws_advanced(self, data):
-
-        self.txt_under.delete(2.0, END)
-        advanced_title = data.replace("_", " ")
-        self.txt_under.insert(END, f'\n\n\n     Advanced: {advanced_title.title()}    \n\n\n')
-
-        adv_selected = self.neo_ws.advanced_data(data)
-        for i in adv_selected:
-            if data == 'orbital_data':
-                self.txt_under.insert(END, f'> {i}:  {adv_selected[i]}\n\n')
-            else:
-                self.txt_under.insert(END, f'\n\n * [{i}]:\n\n')
-                for j in adv_selected[i]:
-                    self.txt_under.insert(END, f'> {j}: {adv_selected[i][j]}\n')
