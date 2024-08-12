@@ -1,4 +1,7 @@
+import webbrowser
 from tkinter import *
+
+import webview
 
 from access.actions_donki import get_donki
 from access.actions_neows import update_and_save_neows_data
@@ -6,7 +9,15 @@ from api_data.about_api import about_api, about_neows, about_donki
 from api_data.donki_data import donki_names
 from api_data.neows_data import neows_names
 
-from app.app_configurations import color
+from app.app_config import color
+
+
+def _open_link(type_link, local_to_open='inside'):
+    if local_to_open == 'inside':
+        webview.create_window(f'{type_link}', type_link)
+        webview.start()
+    elif local_to_open == 'outside':
+        webbrowser.open(type_link)
 
 
 class AppMain:
@@ -250,7 +261,6 @@ class AppMain:
         except AttributeError:
             self.txt_under.insert(END, f'[Error]:--\n\n\n\n')
         else:
-
             if self.menu_selected == 'neows':
 
                 try:
@@ -291,6 +301,11 @@ class AppMain:
                                                     command=lambda: self._neo_ws_advanced('close_approach_data'))
                     self.all_buttons[f'{2}'].config(state=NORMAL, text="Orbital data",
                                                     command=lambda: self._neo_ws_advanced('orbital_data'))
+
+                    self.all_buttons[f'{6}'].config(state=NORMAL, text="Link source",
+                                                    command=lambda: _open_link(self.neo_ws['links']['self']))
+                    self.all_buttons[f'{7}'].config(state=NORMAL, text="Jet Propulsion Laboratory",
+                                                    command=lambda: _open_link(self.neo_ws['nasa_jpl_url']))
 
             elif self.menu_selected == 'donki':
 
@@ -338,11 +353,16 @@ class AppMain:
         adv_selected = self.neo_ws.advanced_data(data)
         for i in adv_selected:
             if data == 'orbital_data':
-                self.txt_under.insert(END, f'> {i}:  {adv_selected[i]}\n\n')
+                if i != 'orbit_class':
+                    self.txt_under.insert(END, f'> {i.replace("_", " ").title()}:  {adv_selected[i]}\n\n')
+                elif i == 'orbit_class':
+                    self.txt_under.insert(END, f'> {i.replace("_", " ").title()}:\n')
+                    for j in adv_selected[i]:
+                        self.txt_under.insert(END, f'   >> {j.replace("_", " ").title()}: {adv_selected[i][j]}\n')
             else:
-                self.txt_under.insert(END, f'\n\n * [{i}]:\n\n')
+                self.txt_under.insert(END, f'\n\n * [{i.title()}]:\n\n')
                 for j in adv_selected[i]:
-                    self.txt_under.insert(END, f'> {j}: {adv_selected[i][j]}\n')
+                    self.txt_under.insert(END, f'> {j.replace("_", " ").title()}: {adv_selected[i][j]}\n')
 
     def _processing_donki(self, parameters_names):
 
@@ -365,7 +385,6 @@ class AppMain:
             self.txt_under.insert(END, f'Error[processing]: {ex}')
 
         else:
-
             self.txt_under.insert(END, f'[Data type:{type(donki_data)} // Has:({len(donki_data)})items]\n\n\n\n')
             self.activate_entries = True
 
@@ -375,7 +394,7 @@ class AppMain:
                 for j in i:
                     self.txt_under.insert(END, f'**({j})** =  [  {i[j]}  ] ;\n\n')
 
-                self.txt_under.insert(END, f'{"-" * 100}\n\n\n')
+                self.txt_under.insert(END, f'\n{"-" * 100}\n\n\n')
                 cont += 1
 
     def _get_donki_parameters(self, parameters_names):

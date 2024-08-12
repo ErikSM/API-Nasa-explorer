@@ -12,15 +12,15 @@ import urllib.request
 
 
 def page_url_in_tkinter(url_test):
-    window_test = Tk()
-    window_test.geometry("800x450")
 
     webview.create_window('Image Open in tkinter (webview)', url_test)
     webview.start()
 
 
 url_image = "https://apod.nasa.gov/apod/image/2405/AuroraStartrails_chiragupreti1024.jpg"
-# page_url_in_tkinter(url_image)
+url_2 = "https://api.nasa.gov/neo/rest/v1/neo/2001221?api_key=NgtvBLp13upL4FK2z6qyWSRJNcJ3U1w4fJcokZmi"
+url_3 = "https://api.nasa.gov/"  # slow
+page_url_in_tkinter(url_2)
 
 
 #  ----------------------------------------------------------------------------
@@ -42,7 +42,7 @@ def url_open(url_test):
 
 
 page_test = "https://api.nasa.gov/"
-#  url_open(page_test)
+# url_open(page_test)
 
 
 #  ----------------------------------------------------------------------------
